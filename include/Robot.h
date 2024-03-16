@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MobiusUtilities.h"
+#include "robot-config.h"
 #include "vex.h"
 
 namespace Mobius {
@@ -9,6 +10,8 @@ namespace Mobius {
 namespace Robot {
     // Internal Information
     extern Position FieldCentricPosition;
+    extern Position desiredPosition;
+    extern float driveSpeed;
     // Velocity and Acceleration
     extern vector2 velocity;    // In cm/s
     extern float angularVelocity; // In radians/s
@@ -37,6 +40,7 @@ namespace Robot {
     extern const float xBias;
     extern const float yBias;
 
+
     // State
     extern bool isAutonomous, isMoving, isDriverControlled;
     extern vector2 desiredVelcity;
@@ -48,6 +52,7 @@ namespace Robot {
 } // namespace Robot
 
 // Essential functionality
+int positioningComputer();
 int RobotOdometry();
 int MotionCalculator();
 
