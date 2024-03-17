@@ -65,18 +65,10 @@ struct vector2 {
 
         // Rotate the vector by a given angle in radians
         vector2 rotate(float angle) {   // This angle is in positive radians. It specifies counter-clockwise rotation angle
+            // Reference: https://matthew-brett.github.io/teaching/rotation_2d.html
             vector2 res;
-            // Alpha is the current angle of the vector
-            float alpha = polarAngle();
-            float hyp = magnetude();
-            // Make sure the angle is between 0 and 2PI
-            do {
-            angle > 2 * M_PI ? angle -= 2 * M_PI : angle;
-            } while (angle > 2 * M_PI);
-            // Beta is the final angle of the vector
-            float beta = alpha + angle;
-            res.x = hyp * cos(beta);
-            res.y = hyp * sin(beta);
+            res.x = x * cos(angle) - y * sin(angle);
+            res.y = x * sin(angle) + y * cos(angle); 
             return res;
         }
     }; // struct vector2
@@ -85,7 +77,13 @@ struct Position {
     float x, y;
     float angle;    // Radians
 
-    Position(vector2 position, float angle);
+    Position(vector2 position, float angle)
+     : x(position.x), y(position.y), angle(angle) {}
+     Position(float x, float y, float angle)
+      : x(x), y(y), angle(angle) {}
+    
+    Position();
+    ~Position();
 };
 
 struct PathNode {

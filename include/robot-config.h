@@ -12,6 +12,8 @@ extern vex::motor backRightWheel;
 extern vex::encoder leftEncoder;
 extern vex::encoder rightEncoder;
 extern vex::encoder backEncoder;
+extern vex::inertial inertialSensor;
+extern vex::gps gps;
 
 
 extern vex::competition Competition;
