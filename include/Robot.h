@@ -3,7 +3,7 @@
 #include "MobiusUtilities.h"
 #include "robot-config.h"
 #include "vex.h"
-
+#include "Bezier.h"
 
 namespace Mobius {
 

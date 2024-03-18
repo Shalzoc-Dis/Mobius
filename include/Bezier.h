@@ -8,13 +8,15 @@ namespace Mobius {
 struct CubicBezier {
     vector2 p0, p1, p2, p3;
 
-    CubicBezier();
-    CubicBezier(vector2 p0, vector2 p1, vector2 p2, vector2 p3);
-    ~CubicBezier();
+    CubicBezier() {};
+    CubicBezier(vector2 p0, vector2 p1, vector2 p2, vector2 p3)
+     : p0(p0), p1(p1), p2(p2), p3(p3) {};
+    ~CubicBezier() {};
 
     vector2 position(float t);
     vector2 positionDerivative1(float t);
-    void visualise();   // This is for testing only. It draws the curve on the Brain's Screen
+    vector2 positionDerivative2(float t);
+    void visualise(int derivative = 0);   // This is for testing only. It draws the curve on the Brain's Screen
 
 }; // struct CubicBezier
 

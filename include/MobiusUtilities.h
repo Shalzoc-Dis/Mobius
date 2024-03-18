@@ -83,7 +83,7 @@ struct Position {
       : x(x), y(y), angle(angle) {}
     
     Position();
-    ~Position();
+    ~Position() {};
 };
 
 struct PathNode {
