@@ -8,6 +8,7 @@
 /*----------------------------------------------------------------------------*/
 #include "vex.h"
 #include "Robot.h"
+#define PLANNING
 
 
 // A global instance of vex::brain used for printing to the V5 brain screen
@@ -26,8 +27,6 @@ int main() {
     curve.p2 = Mobius::vector2(300, 50);
     curve.p3 = Mobius::vector2(400, 150);
     curve.visualise();
-    //curve.visualise(1);
-    //curve.visualise(2);
    
     while(1) {
         

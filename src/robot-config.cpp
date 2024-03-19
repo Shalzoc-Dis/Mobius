@@ -39,4 +39,7 @@ void vexcodeInit() {
     gps.calibrate();
     waitUntil(!gps.isCalibrating());
   }
+  #ifdef PLANNING
+  field.init();
+  #endif
 }

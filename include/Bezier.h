@@ -18,6 +18,18 @@ struct CubicBezier {
     vector2 positionDerivative2(float t);
     void visualise(int derivative = 0);   // This is for testing only. It draws the curve on the Brain's Screen
 
+    float calculateClosestT(vector2 point);
+
 }; // struct CubicBezier
+
+
+struct Spline {
+    std::vector<vector2> points;
+
+    Spline() {};
+    ~Spline() {};
+
+    void visualise();   // This is for testing only. It draws the curve on the Brain's Screen
+}; // struct Spline
 
 } // namespace Mobius

@@ -45,7 +45,6 @@ vector2 CubicBezier::positionDerivative2(float t) {
 void CubicBezier::visualise(int derivative) {
     // This is for testing only. It draws the curve on the Brain's Screen
     // The screen is 480 by 272 pixels. (1, 1) is in the top left corner
-    Brain.Screen.clearScreen(vex::color::black);
     Brain.Screen.setPenColor(vex::color::blue);
     Brain.Screen.setPenWidth(1);
     Brain.Screen.drawCircle(p0.x, p0.y, 3);
@@ -79,6 +78,22 @@ void CubicBezier::visualise(int derivative) {
         }
     }
 
+}
+
+
+void Spline::visualise() {
+    // This is for testing only. It draws the curve on the Brain's Screen
+    // The screen is 480 by 272 pixels. (1, 1) is in the top left corner
+    if (points.size() < 4) {
+        printf("Error: Spline must have at least 4 points\n");
+    } else if (points.size() % 4 != 0) {
+        printf("Error: Spline must have a multiple of 4 points\n");
+    }
+    
+    for (int i = 0; i < points.size() - 3; i += 3) {
+        CubicBezier curve(points[i], points[i + 1], points[i + 2], points[i + 3]);
+        curve.visualise();
+    }
 }
 
 } // namespace Mobius

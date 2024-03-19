@@ -4,6 +4,7 @@
 #include "robot-config.h"
 #include "vex.h"
 #include "Bezier.h"
+#include "Field.h"
 
 namespace Mobius {
 
@@ -46,6 +47,9 @@ namespace Robot {
     extern bool isAutonomous, isMoving, isDriverControlled;
     extern vector2 desiredVelcity;
     extern float desiredAngularVelocity;
+
+    // Field
+    extern Field field;
 
     // Timers
 
