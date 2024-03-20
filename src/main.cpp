@@ -7,8 +7,9 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "vex.h"
+#include "Robot.h"
+#define PLANNING
 
-using namespace vex;
 
 // A global instance of vex::brain used for printing to the V5 brain screen
 vex::brain       Brain;
@@ -19,10 +20,17 @@ vex::brain       Brain;
 int main() {
 
     Brain.Screen.printAt( 10, 50, "Hello V5" );
+
+    Mobius::CubicBezier curve;
+    curve.p0 = Mobius::vector2(50, 50);
+    curve.p1 = Mobius::vector2(220, 170);
+    curve.p2 = Mobius::vector2(300, 50);
+    curve.p3 = Mobius::vector2(400, 150);
+    curve.visualise();
    
     while(1) {
         
         // Allow other tasks to run
-        this_thread::sleep_for(10);
+        vex::this_thread::sleep_for(10);
     }
 }
