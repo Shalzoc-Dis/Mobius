@@ -85,6 +85,22 @@ struct Position {
     
     Position();
     ~Position() {};
+
+    Position operator+(Position const &obj) {
+        Position res;
+        res.x = x + obj.x;
+        res.y = y + obj.y;
+        res.angle = angle + obj.angle;
+        return res;
+    }
+
+    Position operator-(Position const &obj) {
+        Position res;
+        res.x = x - obj.x;
+        res.y = y - obj.y;
+        res.angle = angle - obj.angle;
+        return res;
+    }
 };
 
 struct PathNode {

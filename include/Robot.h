@@ -52,6 +52,7 @@ namespace Robot {
     extern Field field;
 
     // Timers
+    extern vex::timer PositioningComputerUpdateTimer;
 
          
 } // namespace Robot
