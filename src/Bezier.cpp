@@ -58,21 +58,21 @@ void CubicBezier::visualise(int derivative) {
 
     vector2 lastPos = position(0);
     if (derivative == 0) {
-        for (float t = 0.05; t <= 1 - 0.05; t +=0.05) {
+        for (float t = 0.05; t <= 1; t +=0.05) {
             vector2 p1 = position(t);
             Brain.Screen.drawLine(lastPos.x, lastPos.y, p1.x, p1.y);
             lastPos = p1;
             //vex::wait(10, vex::msec);
         }
     } else if (derivative == 1) {
-        for (float t = 0.05; t <= 1 - 0.05; t +=0.05) {
+        for (float t = 0.05; t <= 1; t +=0.05) {
             vector2 p1 = positionDerivative1(t);
             Brain.Screen.drawLine(lastPos.x, lastPos.y, p1.x, p1.y);
             lastPos = p1;
             //vex::wait(10, vex::msec);
         }
     } else if (derivative == 2) {
-        for (float t = 0.05; t <= 1 - 0.05; t +=0.05) {
+        for (float t = 0.05; t <= 1; t +=0.05) {
             vector2 p1 = positionDerivative2(t);
             Brain.Screen.drawLine(lastPos.x, lastPos.y, p1.x, p1.y);
             lastPos = p1;
@@ -84,8 +84,8 @@ void CubicBezier::visualise(int derivative) {
 
 float CubicBezier::calculateClosestT(vector2 point, int iterations) {
     
-    // FIXME: Bezier distance function
-    // Works sometimes, but gets stuck on some gradient ascent problems. It is probably good enough
+    // FIXME: Bezier distance function. Maybe Newton's method with a tangent to the Bezier intersecting a circle around the point?
+    // Works sometimes, but gets stuck on some gradient ascent problems.
     // This function takes a point and tries to find the closest t value on the curve to that point
     // To do this, it first measures the distances to the point and both end points (t=0 and t=1)
     // It then performs the bisection method, going between the closest point and a t between the two end points

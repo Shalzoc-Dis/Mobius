@@ -25,6 +25,9 @@ int main() {
     int iterations = 1;
     bool regenerate = true;
     bool actionTaken = false;
+    int xOffset = 0;
+    int yOffset = 0;
+    float moveSpeed = 0.01f;
 
     while(1) {
         if (Controller1.ButtonX.pressing() || regenerate) {
@@ -52,7 +55,7 @@ int main() {
             curve.visualise();
 
             // Draw test point and find closest point on curve
-            Mobius::vector2 testPoint(width(gen), height(gen));
+            Mobius::vector2 testPoint(width(gen) + xOffset, height(gen) + yOffset);
             Brain.Screen.setPenColor(vex::color::purple);
             Brain.Screen.setPenWidth(1);
             Brain.Screen.drawCircle(testPoint.x, testPoint.y, 3);
@@ -92,6 +95,15 @@ int main() {
             regenerate = true;
         } else if (!Controller1.ButtonA.pressing() && actionTaken) {
             actionTaken = false;
+        }
+
+        if (Controller1.Axis3.value() != 0) {
+            yOffset += -Controller1.Axis3.value() * moveSpeed;
+            regenerate = true;
+        }
+        if (Controller1.Axis4.value() != 0) {
+            xOffset += Controller1.Axis4.value() * moveSpeed;
+            regenerate = true;
         }
 
 
