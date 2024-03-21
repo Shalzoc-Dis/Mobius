@@ -2,7 +2,8 @@
 #include "Robot.h"
 
 float Mobius::Robot::maxVelocityInDirection(float angle) {
-    const float maxForwardVelocity = 1;
+    //                               2πr * rev/min * 60min/s * mysteryConstant
+    const float maxForwardVelocity = Robot::wheelRadius * M_TWOPI * 200 * 60 * 1.0f;
     const float maxSidewaysVelocity = 1;
     return 1.0f;
 };

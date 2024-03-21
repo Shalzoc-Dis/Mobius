@@ -26,21 +26,23 @@ while (true) {
     // Desired velocity
     vector2 v = vector2(speed * cos(angle) * Robot::maxVelocityInDirection(angle), speed * sin(angle) * Robot::maxVelocityInDirection(angle));
     // Desired angular velocity
-    //float ω_z = Robot::maxAngularVelocity(v) * rotation;
+    float ω_z = Robot::maxAngularVelocity(v) * rotation;
     
 
     //Inverse Kinematics
     // ω is the angular velocity, v is the desired velocity, l is the distance from the center of the robot to the wheel 
     // Result is in radians per second
-    float ω_FL = 1/(Robot::wheelRadius) * (v.x - v.y - (Robot::wheelOffset.x + Robot::wheelOffset.y) * rotation);
-    float ω_FR = 1/(Robot::wheelRadius) * (v.x + v.y + (Robot::wheelOffset.x + Robot::wheelOffset.y) * rotation);
-    float ω_BL = 1/(Robot::wheelRadius) * (v.x + v.y - (Robot::wheelOffset.x + Robot::wheelOffset.y) * rotation);
-    float ω_BR = 1/(Robot::wheelRadius) * (v.x - v.y + (Robot::wheelOffset.x + Robot::wheelOffset.y) * rotation);
+    float ω_FL = 1/(Robot::wheelRadius) * (v.x - v.y - (Robot::wheelOffset.x + Robot::wheelOffset.y) * ω_z);
+    float ω_FR = 1/(Robot::wheelRadius) * (v.x + v.y + (Robot::wheelOffset.x + Robot::wheelOffset.y) * ω_z);
+    float ω_BL = 1/(Robot::wheelRadius) * (v.x + v.y - (Robot::wheelOffset.x + Robot::wheelOffset.y) * ω_z);
+    float ω_BR = 1/(Robot::wheelRadius) * (v.x - v.y + (Robot::wheelOffset.x + Robot::wheelOffset.y) * ω_z);
 
     frontRightWheel.spin(vex::directionType::fwd, ω_FR / M_TWOPI * 60, vex::velocityUnits::rpm);
     frontLeftWheel.spin( vex::directionType::fwd, ω_FR / M_TWOPI * 60, vex::velocityUnits::rpm);
     backRightWheel.spin( vex::directionType::fwd, ω_FR / M_TWOPI * 60, vex::velocityUnits::rpm);
     backLeftWheel.spin(  vex::directionType::fwd, ω_FR / M_TWOPI * 60, vex::velocityUnits::rpm);
+
+    // If we integrate the wheels' angular velocities, we get a vector of its motion
 
 
     vex::task::sleep(20);
