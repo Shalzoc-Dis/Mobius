@@ -30,7 +30,6 @@ int main() {
     std::random_device rd;
 
     while(true) {
-        printf("Testing...\n");
         if (Controller1.ButtonX.pressing() || regenerate) {
             Mobius::Profiler timer("RegenerationLoop", Mobius::Profiler::type::TIMER);
             printf("Regenerating...\n");
@@ -74,7 +73,7 @@ int main() {
 
             printf("Display regenerated.\n");            
         }
-        /*
+        
         if (Controller1.ButtonB.pressing() && !actionTaken) {
             generatorSeed++;
             actionTaken = true;
@@ -107,7 +106,7 @@ int main() {
             xOffset += Controller1.Axis4.value() * moveSpeed;
             regenerate = true;
         }
-        */
+        
 
 
         // Allow other tasks to run

@@ -19,7 +19,7 @@ Mobius::Profiler::Profiler(const std::string& name, Mobius::Profiler::type type)
 Profiler::~Profiler() {
     switch (profilerType) {
         case Profiler::type::TIMER:
-            printf("[TIMER] \"%s\" took %fms.\n", name.c_str(), runTime.time(vex::timeUnits::msec));
+            printf("[TIMER] %s took %ims.\n", name.c_str(), (int)runTime.time(vex::timeUnits::msec));
             break;
         case Profiler::type::MEMORY:
             // Log memory tracking results

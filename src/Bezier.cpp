@@ -4,7 +4,6 @@
 namespace Mobius {
 
 vector2 CubicBezier::position(float t) {
-    Mobius::Profiler timer("CubicBezier::position()", Mobius::Profiler::type::TIMER);
     if (t < 0 || t > 1) {
     t /= t;
     t = fabs(t);
@@ -44,7 +43,7 @@ vector2 CubicBezier::positionDerivative2(float t) {
 }
 
 void CubicBezier::visualise(int derivative) {
-    Mobius::Profiler timer("Curve.visualise()", Mobius::Profiler::type::TIMER);
+    Mobius::Profiler timer("CubicBezier::visualise()", Mobius::Profiler::type::TIMER);
     // This is for testing only. It draws the curve on the Brain's Screen
     // The screen's usable area is 480 by 240 pixels. (1, 1) is in the top left corner
     Brain.Screen.setPenColor(vex::color::blue);
@@ -82,6 +81,7 @@ void CubicBezier::visualise(int derivative) {
 
 float CubicBezier::calculateClosestT(vector2 point, uint8_t divisions, uint8_t iterations) {
     Mobius::Profiler timer("calculateClosestT()", Mobius::Profiler::type::TIMER);
+    /*
     // FIXME: Bezier distance function. Maybe Newton's method with a tangent to the Bezier intersecting a circle around the point?
     // FIXME: Try doing this twice, between the intersection of the derivative and the end points.
     // Works sometimes, but gets stuck on some gradient ascent problems.
@@ -129,16 +129,17 @@ float CubicBezier::calculateClosestT(vector2 point, uint8_t divisions, uint8_t i
 
     printf("Best t overall: %f\n", bestTs[tOfBestDist]);
     return bestTs[tOfBestDist];
+    */
     
-   /*
-   // Test a bunch of points and use the closest one
-   float distances[iterations];
-   for (int i = 0; i < iterations; i++) {
-       float t = i / iterations;
-       vector2 p = position(t);
-       Brain.Screen.drawRectangle(p.x - 1, p.y - 1, 3, 3, vex::color::orange);
-       distances[i] = sqrt(pow(p.x - point.x, 2) + pow(p.y - point.y, 2));
-   }
+    /*
+    // Test a bunch of points and use the closest one
+    float distances[iterations];
+    for (int i = 0; i < iterations; i++) {
+        float t = i / iterations;
+        vector2 p = position(t);
+        Brain.Screen.drawRectangle(p.x - 1, p.y - 1, 3, 3, vex::color::orange);
+        distances[i] = sqrt(pow(p.x - point.x, 2) + pow(p.y - point.y, 2));
+    }
     // Find the minimum distance
     float minDistance = distances[0];
     int location = 0;
@@ -154,6 +155,53 @@ float CubicBezier::calculateClosestT(vector2 point, uint8_t divisions, uint8_t i
     }
     return location / iterations;
     */
+
+    // This function uses two points on the curve and calculates the distance from each to the test point
+    // The t that produces the farther point is then changed to be the average of the points. The other point stays the same
+    // The search is performed anew on these two points. Overall, it runs [iteration] times
+    // This is also a divide-and-conquer algorithm to address some gradient ascent pitfalls.
+    // The curve is divided up into [divisions] sectors, the start and end points of which are the inputs to the search
+    // The smallest distance from the smallest distances of each sector is then returned.
+
+    float delta = 1.0f / divisions;  // The difference in t between two points. The 1.0f is important because the result is cast to an int if we simply write 1, rounding it and messing up the calculations
+    float bestTs[divisions];
+    printf("calculateClosestT(divisions[%i], iterations[%i])\n", divisions, iterations);
+    printf("Delta: %f", delta);
+    for (int i = 0; i < divisions; i++) {
+
+        float t_0 = delta * i; // Let divisions=1/3. If i=0, t_0=0. If i=1, t_0=1/3. If i=2, t_0=2/3
+        float t_1 = delta * (i + 1); // Let divisions=1/3. If i=0, t_0=1/3. If i=1, t_0=2/3. If i=2, t_0=3/3=1
+
+        for (int j = 0; j < iterations; j++) {
+            printf("Sector search #%i; iteration %i: t_0[%f] t_1[%f]\n", i, j, t_0, t_1);
+            // Calculate the distance from the point to the curve at t_0
+            float distance_0 = hypot(position(t_0).x - point.x, position(t_0).y - point.y);
+            // Calculate the distance from the point to the curve at t_1
+            float distance_1 = hypot(position(t_1).x - point.x, position(t_1).y - point.y);
+            // Check to see which is lower
+            // If the distance to t_0 is lower, make t_1 = (t_0 + t_1) / 2
+            // If the distance to t_1 is lower, make t_0 = (t_0 + t_1) / 2
+            if (distance_0 < distance_1) {
+                t_1 = (t_0 + t_1) / 2;
+            } else {
+                t_0 = (t_0 + t_1) / 2;
+            }
+        }
+
+        bestTs[i] = (t_0 + t_1) / 2;
+    }
+
+    // Find best T of the array bestTs
+    float smallestDist = MAXFLOAT;
+    uint8_t smallestDistLocation;
+    for (int i = 0; i < divisions; i++) {
+        float distance = hypot(position(bestTs[i]).x - point.x, position(bestTs[i]).y - point.y);
+        if (distance < smallestDist) {
+            smallestDist = distance;
+            smallestDistLocation = i;
+        }
+    }
+    return bestTs[smallestDistLocation];
     
 }
 
