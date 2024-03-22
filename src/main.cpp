@@ -22,15 +22,19 @@ int main() {
 
     Brain.Screen.printAt( 10, 50, "Hello V5" );
     int generatorSeed = 11;
-    int iterations = 1;
+    int iterations = 5;
     bool regenerate = true;
     bool actionTaken = false;
     int xOffset = 0;
     int yOffset = 0;
     float moveSpeed = 0.01f;
+    std::random_device rd;
+    printf("Variables Initialised\n");
 
-    while(1) {
+    while(true) {
+        printf("Testing...");
         if (Controller1.ButtonX.pressing() || regenerate) {
+            printf("Regenerating...");
             Brain.Screen.clearScreen();
             regenerate = false;
 
@@ -39,7 +43,6 @@ int main() {
             Brain.Screen.printAt(0, 30, "Iterations: %d", iterations);
 
             // Generate pseudo-random numbers
-            std::random_device rd;
             std::mt19937 gen(generatorSeed);
             std::uniform_int_distribution<> height(0 + 5, 240 - 5);
             std::uniform_int_distribution<> width(0 + 5, 480 - 5);
@@ -53,13 +56,15 @@ int main() {
             curve.p2 = Mobius::vector2(width(gen), height(gen));
             curve.p3 = Mobius::vector2(width(gen), height(gen));
             curve.visualise();
+            printf("Curve Created and drawn.");
 
             // Draw test point and find closest point on curve
             Mobius::vector2 testPoint(width(gen) + xOffset, height(gen) + yOffset);
             Brain.Screen.setPenColor(vex::color::purple);
             Brain.Screen.setPenWidth(1);
             Brain.Screen.drawCircle(testPoint.x, testPoint.y, 3);
-            float closestT = curve.calculateClosestT(testPoint, iterations);
+            printf("About to calculate closest T\n");
+            float closestT = curve.calculateClosestT(testPoint, 5, iterations);
             Mobius::vector2 posAtClosestT = curve.position(closestT);
             float radius = sqrt(pow(testPoint.x - posAtClosestT.x, 2) + pow(testPoint.y - posAtClosestT.y, 2));
             Brain.Screen.setPenColor(vex::color::cyan);
@@ -68,11 +73,9 @@ int main() {
             Brain.Screen.drawLine(testPoint.x, testPoint.y, posAtClosestT.x, posAtClosestT.y);
             Brain.Screen.drawCircle(posAtClosestT.x, posAtClosestT.y, 3);
 
-    
-            
-            
+            printf("Display regenerated.");            
         }
-
+        /*
         if (Controller1.ButtonB.pressing() && !actionTaken) {
             generatorSeed++;
             actionTaken = true;
@@ -97,17 +100,18 @@ int main() {
             actionTaken = false;
         }
 
-        if (Controller1.Axis3.value() != 0) {
+        if (fabs(Controller1.Axis3.value()) > 3) {
             yOffset += -Controller1.Axis3.value() * moveSpeed;
             regenerate = true;
         }
-        if (Controller1.Axis4.value() != 0) {
+        if (fabs(Controller1.Axis4.value()) > 3) {
             xOffset += Controller1.Axis4.value() * moveSpeed;
             regenerate = true;
         }
+        */
 
 
         // Allow other tasks to run
-        vex::this_thread::sleep_for(10);
+        vex::this_thread::sleep_for(50);
     }
 }

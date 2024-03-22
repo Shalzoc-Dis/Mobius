@@ -18,7 +18,7 @@ struct CubicBezier {
     vector2 positionDerivative2(float t);
     void visualise(int derivative = 0);   // This is for testing only. It draws the curve on the Brain's Screen
 
-    float calculateClosestT(vector2 point, int iterations);
+    float calculateClosestT(vector2 point, uint8_t divisions, uint8_t iterations);
 
 }; // struct CubicBezier
 
