@@ -53,7 +53,7 @@ void CubicBezier::visualise(int derivative) {
     vector2 lastPos = position(0);
     if (derivative == 0) {
         Brain.Screen.setPenColor(vex::color::green);
-        for (float t = 0.05; t <= 1; t+=0.05) {
+        for (float t = 0.05; t <= 1.05; t+=0.05) {
             vector2 pos = position(t);
             Brain.Screen.drawLine(lastPos.x, lastPos.y, pos.x, pos.y);
             lastPos = pos;
@@ -61,20 +61,21 @@ void CubicBezier::visualise(int derivative) {
         }
     } else if (derivative == 1) {
         Brain.Screen.setPenColor(vex::color::yellow);
-        for (float t = 0.05; t <= 1; t+=0.05) {
+        for (float t = 0.05; t <= 1.05; t+=0.05) {
             vector2 pos = positionDerivative1(t);
             Brain.Screen.drawLine(lastPos.x, lastPos.y, pos.x, pos.y);
             lastPos = pos;
             //vex::wait(10, vex::msec);
         }
-    } /*else if (derivative == 2) {
-        for (float t = 0.05; t <= 1; t +=0.05) {
-            vector2 p1 = positionDerivative2(t);
-            Brain.Screen.drawLine(lastPos.x, lastPos.y, p1.x, p1.y);
-            lastPos = p1;
+    } /lse if (derivative == 2) {
+        Brain.Screen.setPenColor(vex::color::red);
+        for (float t = 0.05; t <= 1.05; t+=0.05) {
+            vector2 pos = positionDerivative2(t);
+            Brain.Screen.drawLine(lastPos.x, lastPos.y, pos.x, pos.y);
+            lastPos = pos;
             //vex::wait(10, vex::msec);
         }
-    }*/
+    }
 
 }
 
