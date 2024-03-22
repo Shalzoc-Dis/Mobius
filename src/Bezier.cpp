@@ -88,15 +88,16 @@ float CubicBezier::calculateClosestT(vector2 point, uint8_t divisions, uint8_t i
     // This function takes a point and tries to find the closest t value on the curve to that point
     // To do this, it first measures the distances to the point and both end points (t=0 and t=1)
     // It then performs the bisection method, going between the closest point and a t between the two end points
-    printf("Starting closestT calculation");
+    printf("Starting closestT calculation.\n");
     float delta = 1/float(divisions);
     float bestTs[divisions];
-    printf("initial delta[%f]", delta);
-    for (float i = 0; i < divisions; i += delta) {
-        printf("Delta[%f], divisions[%hhu], i[%f]\n", delta, divisions, i);
-        float t_0 = i;
-        float t_1 = i + delta;
-        for(int i = 0; i < iterations; i++) {
+    printf("initial delta[%f]\n", delta);
+    for (int i = 1; i < divisions; i++) {
+        printf("Delta[%f], divisions[%hhu]\n", delta, divisions);
+        float t_0 = i/divisions;
+        float t_1 = i/divisions + delta;
+        for (int j = 0; j < iterations; i++) {
+            printf("Sector search #%f; iteration %i: t_0[%f] t_1[%f]\n", i, j, t_0, t_1);
             // Calculate the distance from the point to the curve at t_0
             float distance_0 = sqrt(pow(position(t_0).x - point.x, 2) + pow(position(t_0).y - point.y, 2));
             // Calculate the distance from the point to the curve at t_1

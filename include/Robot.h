@@ -50,9 +50,7 @@ namespace Robot {
     extern float desiredAngularVelocity;
 
     // Field
-    #ifdef PLANNING
     extern Field field;
-    #endif
 
     // Timers
     extern vex::timer PositioningComputerUpdateTimer;

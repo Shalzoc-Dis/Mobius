@@ -9,7 +9,6 @@
 #include "vex.h"
 #include "Robot.h"
 #include <random>   // For testing purposes
-#define PLANNING
 
 
 // A global instance of vex::brain used for printing to the V5 brain screen
@@ -19,6 +18,7 @@ vex::brain       Brain;
 
 
 int main() {
+    vexcodeInit();
     Brain.Screen.printAt( 10, 50, "Hello V5" );
     int generatorSeed = 11;
     int iterations = 5;
@@ -30,10 +30,10 @@ int main() {
     std::random_device rd;
 
     while(true) {
-        printf("Testing...");
+        printf("Testing...\n");
         if (Controller1.ButtonX.pressing() || regenerate) {
             Mobius::Profiler timer("RegenerationLoop", Mobius::Profiler::type::TIMER);
-            printf("Regenerating...");
+            printf("Regenerating...\n");
             Brain.Screen.clearScreen();
             regenerate = false;
 
@@ -55,7 +55,7 @@ int main() {
             curve.p2 = Mobius::vector2(width(gen), height(gen));
             curve.p3 = Mobius::vector2(width(gen), height(gen));
             curve.visualise();
-            printf("Curve Created and drawn.");
+            printf("Curve Created and drawn.\n");
 
             // Draw test point and find closest point on curve
             Mobius::vector2 testPoint(width(gen) + xOffset, height(gen) + yOffset);
@@ -72,7 +72,7 @@ int main() {
             Brain.Screen.drawLine(testPoint.x, testPoint.y, posAtClosestT.x, posAtClosestT.y);
             Brain.Screen.drawCircle(posAtClosestT.x, posAtClosestT.y, 3);
 
-            printf("Display regenerated.");            
+            printf("Display regenerated.\n");            
         }
         /*
         if (Controller1.ButtonB.pressing() && !actionTaken) {

@@ -9,20 +9,22 @@ namespace Mobius {
 class FieldElement {
 
 public:
-    FieldElement();
-    FieldElement(uint8_t type, vector2 position, vector2 size, uint8_t alliance);
-    ~FieldElement();
+    enum class type { NET, TRIBALL, LOW_BARRIER, HIGH_BARRIER };
+    enum class alliance { RED, BLUE };
+
+    FieldElement() {};
+    FieldElement(FieldElement::type type, vector2 position, vector2 size, FieldElement::alliance alliance);
+    ~FieldElement() {};
 
     void draw();
 
-    enum class Type { NET, TRIBALL, LOW_BARRIER, HIGH_BARRIER };
-    enum class Alliance { RED, BLUE };
+    
 
 private:
+    FieldElement::type elementType;
     vector2 position;
     vector2 size;
-    uint8_t type;
-    uint8_t alliance;
+    FieldElement::alliance alliance;
 
 };
 

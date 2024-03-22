@@ -10,6 +10,7 @@ vex::motor backRightWheel = vex::motor(vex::PORT9, vex::ratio18_1, true);
 
 vex::encoder leftEncoder = vex::encoder(Brain.ThreeWirePort.C); // Top wire is in port C, the bottom is in port D
 vex::encoder rightEncoder = vex::encoder(Brain.ThreeWirePort.A);  // Top wire is in port B, the bottom is in port A
+vex::encoder backEncoder = vex::encoder(Brain.ThreeWirePort.E);
 
 vex::inertial inertialSensor = vex::inertial(vex::PORT1);
 vex::gps gps = vex::gps(vex::PORT2, 0, 0, vex::distanceUnits::mm, 0);
@@ -39,7 +40,4 @@ void vexcodeInit() {
     gps.calibrate();
     waitUntil(!gps.isCalibrating());
   }
-  #ifdef PLANNING
-  field.init();
-  #endif
 }
