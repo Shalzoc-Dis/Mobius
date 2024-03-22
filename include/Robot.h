@@ -10,6 +10,7 @@ namespace Mobius {
 
     // ------------------------------------- Global constant information -----------------------------------------------------
 namespace Robot {
+    extern vex::brain Brain;
     // Internal Information
     extern Position FieldCentricPosition;
     extern Position desiredPosition;
@@ -30,26 +31,28 @@ namespace Robot {
     extern float width, length, height; // In cm
     // Wheel Positions
     const vector2 wheelOffset(2, 4); // In cm
-    extern const vector2 leftEncoderPosition;
-    extern const vector2 rightEncoderPosition;
-    extern const vector2 backEncoderPosition; 
+    const vector2 leftEncoderPosition(-3, 4);
+    const vector2 rightEncoderPosition(3, 4);
+    const vector2 backEncoderPosition(0, -3); 
     // Other
     const Position gpsOffset(0, 0, 0); // In mm
 
     // This is the bias of the mecanum wheels. The more powerful direction is the lower number, which acts as a multiplier 
     // for the motor movements in that direction in order to make the robot move perfectly. This accounts for the friction in 
     // the wheels that our calculation does not account for.
-    extern const float xBias;
-    extern const float yBias;
+    const float xBias = 1.0f;
+    const float yBias = 1.0f;
 
 
     // State
     extern bool isAutonomous, isMoving, isDriverControlled;
-    extern vector2 desiredVelcity;
+    extern vector2 desiredVelocity;
     extern float desiredAngularVelocity;
 
     // Field
+    #ifdef PLANNING
     extern Field field;
+    #endif
 
     // Timers
     extern vex::timer PositioningComputerUpdateTimer;

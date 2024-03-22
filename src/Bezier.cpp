@@ -4,6 +4,7 @@
 namespace Mobius {
 
 vector2 CubicBezier::position(float t) {
+    Mobius::Profiler timer("CubicBezier::position()", Mobius::Profiler::type::TIMER);
     if (t < 0 || t > 1) {
     t /= t;
     t = fabs(t);
@@ -43,6 +44,7 @@ vector2 CubicBezier::positionDerivative2(float t) {
 }
 
 void CubicBezier::visualise(int derivative) {
+    Mobius::Profiler timer("Curve.visualise()", Mobius::Profiler::type::TIMER);
     // This is for testing only. It draws the curve on the Brain's Screen
     // The screen's usable area is 480 by 240 pixels. (1, 1) is in the top left corner
     Brain.Screen.setPenColor(vex::color::blue);
@@ -79,8 +81,7 @@ void CubicBezier::visualise(int derivative) {
 }
 
 float CubicBezier::calculateClosestT(vector2 point, uint8_t divisions, uint8_t iterations) {
-    return 0.0f;
-    
+    Mobius::Profiler timer("calculateClosestT()", Mobius::Profiler::type::TIMER);
     // FIXME: Bezier distance function. Maybe Newton's method with a tangent to the Bezier intersecting a circle around the point?
     // FIXME: Try doing this twice, between the intersection of the derivative and the end points.
     // Works sometimes, but gets stuck on some gradient ascent problems.

@@ -1,15 +1,30 @@
 #include "Profiler.h"
-#include <vex.h>
 
 
 namespace Mobius {
 
-Profile::Profile(const std::string name) {
-    
+
+Mobius::Profiler::Profiler(const std::string& name, Mobius::Profiler::type type) 
+ : name(name), profilerType(type) {
+    switch (type) {
+        case Profiler::type::TIMER:
+            runTime.clear();
+            break;
+        case Profiler::type::MEMORY:
+            // Begin memory tracking
+            break;
+    }
 };
 
-Profile::~Profile() {
-
+Profiler::~Profiler() {
+    switch (profilerType) {
+        case Profiler::type::TIMER:
+            printf("[TIMER] \"%s\" took %fms.", name.c_str(), runTime.time(vex::timeUnits::msec));
+            break;
+        case Profiler::type::MEMORY:
+            // Log memory tracking results
+            break;
+    }
 };
 
 

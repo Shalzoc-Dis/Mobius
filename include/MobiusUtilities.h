@@ -2,6 +2,7 @@
 
 #include <vex.h>
 #include <vector>
+#include "Profiler.h"
 
 namespace Mobius {
 

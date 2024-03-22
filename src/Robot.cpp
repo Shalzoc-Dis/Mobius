@@ -1,4 +1,3 @@
-#pragma once
 #include "Robot.h"
 
 float Mobius::Robot::maxVelocityInDirection(float angle) {

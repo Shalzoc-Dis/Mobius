@@ -19,7 +19,6 @@ vex::brain       Brain;
 
 
 int main() {
-
     Brain.Screen.printAt( 10, 50, "Hello V5" );
     int generatorSeed = 11;
     int iterations = 5;
@@ -29,11 +28,11 @@ int main() {
     int yOffset = 0;
     float moveSpeed = 0.01f;
     std::random_device rd;
-    printf("Variables Initialised\n");
 
     while(true) {
         printf("Testing...");
         if (Controller1.ButtonX.pressing() || regenerate) {
+            Mobius::Profiler timer("RegenerationLoop", Mobius::Profiler::type::TIMER);
             printf("Regenerating...");
             Brain.Screen.clearScreen();
             regenerate = false;
