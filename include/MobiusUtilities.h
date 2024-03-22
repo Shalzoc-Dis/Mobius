@@ -3,6 +3,7 @@
 #include <vex.h>
 #include <vector>
 #include "Profiler.h"
+#include <random>
 
 namespace Mobius {
 
