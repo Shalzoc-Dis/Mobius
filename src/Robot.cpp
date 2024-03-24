@@ -13,3 +13,30 @@ float Mobius::Robot::maxVelocityInDirection(float angle) {
 float Mobius::Robot::maxAngularVelocity(vector2 velocity) {
     return 1.0f;
 };
+
+
+namespace Mobius { namespace Robot {
+// Implementations of the vaiables in Robot.h
+Position FieldCentricPosition(0, 0, 0);
+Position desiredPosition(0, 0, 0);
+float driveAngle;
+float driveSpeed;
+// Velocity and Acceleration
+vector2 velocity;    // In cm/s
+float angularVelocity; // In radians/s
+vector2 acceleration; // In cm/s^2
+float angularAcceleration; // In radians/s^2
+vector2 momentum;
+
+// Physical Characteristics
+float width, length, height; // In cm
+
+// State
+state controlState;
+vector2 desiredVelocity;
+float desiredAngularVelocity;
+
+
+
+} // namespace Mobius::Robot   
+} // namespace Mobius

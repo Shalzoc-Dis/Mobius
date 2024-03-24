@@ -54,7 +54,7 @@ int Mobius::positioningComputer() {
         // If only one is accurate, only that one is used
         // If neither are accurate, the velocity is not updated
         vector2 gpsDeltaVelocityByAcceleration = gpsVelocityByAcceleration - gpsLastVelocityByAcceleration;
-        if (gpsDeltaVelocityByAcceleration.magnetude() > Robot::maxVelocityInDirection(10)) {
+        if (gpsDeltaVelocityByAcceleration.magnitude() > Robot::maxVelocityInDirection(10)) {
             
         }
 

@@ -2,10 +2,10 @@
 
 
 // vex::motor M_FL = vex::motor(vex::PORT1, vex::gearSetting::ratio18_1, bool reversed);
-vex::motor frontLeftWheel = vex::motor(vex::PORT20, vex::ratio18_1, false);
-vex::motor frontRightWheel = vex::motor(vex::PORT19, vex::ratio18_1, true);
-vex::motor backLeftWheel = vex::motor(vex::PORT10, vex::ratio18_1, false);
-vex::motor backRightWheel = vex::motor(vex::PORT9, vex::ratio18_1, true);
+vex::motor frontLeftWheel = vex::motor(vex::PORT14, vex::ratio18_1, false);
+vex::motor frontRightWheel = vex::motor(vex::PORT17, vex::ratio18_1, true);
+vex::motor backLeftWheel = vex::motor(vex::PORT13, vex::ratio18_1, false);
+vex::motor backRightWheel = vex::motor(vex::PORT16, vex::ratio18_1, true);
 
 
 vex::encoder leftEncoder = vex::encoder(Brain.ThreeWirePort.C); // Top wire is in port C, the bottom is in port D

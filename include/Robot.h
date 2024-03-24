@@ -14,23 +14,25 @@ namespace Robot {
     // Internal Information
     extern Position FieldCentricPosition;
     extern Position desiredPosition;
+    extern float driveAngle;
     extern float driveSpeed;
     // Velocity and Acceleration
     extern vector2 velocity;    // In cm/s
     extern float angularVelocity; // In radians/s
     extern vector2 acceleration; // In cm/s^2
     extern float angularAcceleration; // In radians/s^2
+    extern vector2 momentum;
     // TODO: maxVelocityInDirection and maxAngularVelocity
     extern float maxVelocityInDirection(float angle); // In cm/s
     extern float maxAngularVelocity(vector2 velocity);  // In radians/s
 
     // Physical Characteristics
     const float mass = 5;   // In kg
-    const float wheelRadius = 10.16; // In cm
-    const float odoWheelDiameter = 6.9; // In cm
+    const float wheelRadius = 5.08; // In cm
+    const vector2 wheelOffset(16.8f, 18.0f); // In cm
     extern float width, length, height; // In cm
     // Wheel Positions
-    const vector2 wheelOffset(2, 4); // In cm
+    const float odoWheelDiameter = 6.9; // In cm
     const vector2 leftEncoderPosition(-3, 4);
     const vector2 rightEncoderPosition(3, 4);
     const vector2 backEncoderPosition(0, -3); 
@@ -45,7 +47,8 @@ namespace Robot {
 
 
     // State
-    extern bool isAutonomous, isMoving, isDriverControlled;
+    enum class state { AUTONOMOUS, DRIVER_CONTROLLED };
+    extern state controlState;
     extern vector2 desiredVelocity;
     extern float desiredAngularVelocity;
 
@@ -56,12 +59,15 @@ namespace Robot {
     extern vex::timer PositioningComputerUpdateTimer;
 
          
+void MotionCalculatorByVelocity();
+void DirectionCalculator();
 } // namespace Robot
 
 // Essential functionality
 int positioningComputer();
 int RobotOdometry();
-int MotionCalculator();
+
+
 
 
 

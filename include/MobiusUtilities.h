@@ -32,7 +32,7 @@ struct vector2 {
             return res;
         }
 
-        float magnetude() {
+        float magnitude() {
             return sqrt(pow(x, 2) + pow(y, 2));
         }
 
@@ -46,6 +46,9 @@ struct vector2 {
             res.y = y * obj;
             return res;
         }
+        vector2 operator*=(float const &obj) {
+            return vector2(x * obj, y * obj);
+        }
 
         vector2 operator/(float const &obj) {
             vector2 res;
@@ -54,15 +57,19 @@ struct vector2 {
             return res;
         }
 
+        vector2 operator/=(float const &obj) {
+            return vector2(x / obj, y / obj);
+        }
+
         void normalise() {
-            x /= magnetude();
-            y /= magnetude();
+            x /= magnitude();
+            y /= magnitude();
         }
 
         vector2 normalised() {
             vector2 res;
-            res.x = x / magnetude();
-            res.y = y / magnetude();
+            res.x = x / magnitude();
+            res.y = y / magnitude();
             return res;
         }
 

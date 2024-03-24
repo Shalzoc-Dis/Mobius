@@ -10,6 +10,7 @@
 #include "Robot.h"
 
 
+
 // A global instance of vex::brain used for printing to the V5 brain screen
 vex::brain       Brain;
 
@@ -18,11 +19,15 @@ vex::brain       Brain;
 
 int main() {
     vexcodeInit();
-    
-    Mobius::CubicBezier::test();
+
+    Mobius::Robot::driveSpeed = 0.5f;
+    Mobius::Robot::controlState = Mobius::Robot::state::DRIVER_CONTROLLED;
 
     while (true) {
 
+        Mobius::Robot::DirectionCalculator();
+        Mobius::Robot::MotionCalculatorByVelocity();
+        
 
         // Allow other tasks to run
         vex::this_thread::sleep_for(50);

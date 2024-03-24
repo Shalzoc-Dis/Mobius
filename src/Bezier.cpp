@@ -67,7 +67,7 @@ void CubicBezier::visualise(int derivative) {
             lastPos = pos;
             //vex::wait(10, vex::msec);
         }
-    } /lse if (derivative == 2) {
+    } else if (derivative == 2) {
         Brain.Screen.setPenColor(vex::color::red);
         for (float t = 0.05; t <= 1.05; t+=0.05) {
             vector2 pos = positionDerivative2(t);
@@ -76,7 +76,6 @@ void CubicBezier::visualise(int derivative) {
             //vex::wait(10, vex::msec);
         }
     }
-
 }
 
 float CubicBezier::calculateClosestT(vector2 point, uint8_t divisions = 5, uint8_t iterations = 5) {
