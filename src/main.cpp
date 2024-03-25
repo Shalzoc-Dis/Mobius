@@ -20,13 +20,12 @@ vex::brain       Brain;
 int main() {
     vexcodeInit();
 
-    Mobius::Robot::driveSpeed = 0.5f;
+    Mobius::Robot::driveSpeed = 1.0f;
     Mobius::Robot::controlState = Mobius::Robot::state::DRIVER_CONTROLLED;
 
     while (true) {
 
-        Mobius::Robot::DirectionCalculator();
-        Mobius::Robot::MotionCalculatorByVelocity();
+        Mobius::Robot::MotionCalculators();
         
 
         // Allow other tasks to run

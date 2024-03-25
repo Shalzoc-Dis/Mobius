@@ -59,8 +59,7 @@ namespace Robot {
     extern vex::timer PositioningComputerUpdateTimer;
 
          
-void MotionCalculatorByVelocity();
-void DirectionCalculator();
+void MotionCalculators();
 } // namespace Robot
 
 // Essential functionality
