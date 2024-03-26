@@ -19,7 +19,7 @@ void Robot::MotionCalculators() {
             // The robot should move in the direction of the joystick
             vector2 controllerPosition((float)Controller1.Axis4.position(), (float)Controller1.Axis3.position());
             if (controllerPosition.magnitude() > 1) {
-                Robot::desiredVelocity = controllerPosition / 127.0f; // The maximum value the controller can return for this is 127
+                Robot::desiredVelocity = controllerPosition / 127.0f; // The maximum value the controller can return for its magnitude is 127
             } else {
                 Robot::desiredVelocity = vector2(0.0f, 0.0f);
             }
@@ -84,17 +84,39 @@ void Robot::MotionCalculators() {
             angularVel_BL /= largest;
             angularVel_BR /= largest;
         }
-       
-        printf("Front Left Wheel Angular Velocity: %f\n", angularVel_FL);
-        printf("Front Right Wheel Angular Velocity %f\n", angularVel_FR);
-        printf("Back Left Wheel Angular Velocity:  %f\n", angularVel_BL);
-        printf("Back Right Wheel Angular Velocity: %f\n\n", angularVel_BR);
+        // TODO: Do all final adjustments here and then make sure there is always a motor at maximum power. 
+        // This will make sure the robot is always moving at the maximum speed it can
+        
+        // Adjust for movement speed and convert to percentage
+        angularVel_BL * Robot::driveSpeed * 100.0f;
 
+        printf("angularVel_FL before: %f\n", angularVel_FL);
+        printf("angularVel_FR before: %f\n", angularVel_FR);
+        printf("angularVel_BL before: %f\n", angularVel_BL);
+        printf("angularVel_BR before: %f\n\n", angularVel_BR);
+        
+        // TODO: Fix this. It does not properly scale the values
+        largest = std::max(std::max(std::abs(angularVel_FL), std::abs(angularVel_FR)), std::max(std::abs(angularVel_BL), std::abs(angularVel_BR)));
+        if (largest < Robot::driveSpeed * 100.0f) {
+            angularVel_FL = angularVel_FL * (Robot::driveSpeed * 100.0f / largest) * v.magnitude();
+            angularVel_FR = angularVel_FR * (Robot::driveSpeed * 100.0f / largest) * v.magnitude();
+            angularVel_BL = angularVel_BL * (Robot::driveSpeed * 100.0f / largest) * v.magnitude();
+            angularVel_BR = angularVel_BR * (Robot::driveSpeed * 100.0f / largest) * v.magnitude();
+        }
+
+       
+        printf("angularVel_FL after: %f\n", angularVel_FL);
+        printf("angularVel_FR after: %f\n", angularVel_FR);
+        printf("angularVel_BL after: %f\n", angularVel_BL);
+        printf("angularVel_BR after: %f\n\n", angularVel_BR);
+        
         // Convert radians per second to rpm and set motor velocity
-        frontRightWheel.spin(vex::directionType::fwd, angularVel_FR * Robot::driveSpeed * 100.0f, vex::velocityUnits::pct);
-        frontLeftWheel.spin( vex::directionType::fwd, angularVel_FL * Robot::driveSpeed * 100.0f, vex::velocityUnits::pct);
-        backRightWheel.spin( vex::directionType::fwd, angularVel_BR * Robot::driveSpeed * 100.0f, vex::velocityUnits::pct);
-        backLeftWheel.spin(  vex::directionType::fwd, angularVel_BL * Robot::driveSpeed * 100.0f, vex::velocityUnits::pct);
+        /*
+        frontRightWheel.spin(vex::directionType::fwd, angularVel_FR, vex::velocityUnits::pct);
+        frontLeftWheel.spin( vex::directionType::fwd, angularVel_FL, vex::velocityUnits::pct);
+        backRightWheel.spin( vex::directionType::fwd, angularVel_BR, vex::velocityUnits::pct);
+        backLeftWheel.spin(  vex::directionType::fwd, angularVel_BL, vex::velocityUnits::pct);
+        */
     } else {
         // Stop the robot
         frontRightWheel.stop(vex::brakeType::hold);

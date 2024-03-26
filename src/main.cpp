@@ -20,7 +20,7 @@ vex::brain       Brain;
 int main() {
     vexcodeInit();
 
-    Mobius::Robot::driveSpeed = 1.0f;
+    Mobius::Robot::driveSpeed = 0.1f;
     Mobius::Robot::controlState = Mobius::Robot::state::DRIVER_CONTROLLED;
 
     while (true) {
