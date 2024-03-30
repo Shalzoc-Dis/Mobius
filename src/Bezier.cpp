@@ -156,19 +156,19 @@ void CubicBezier::test() {
             // Draw random test curve
             Mobius::CubicBezier curve;
             
-            curve.p0 = Mobius::vector2(width(gen), height(gen));
-            curve.p1 = Mobius::vector2(width(gen), height(gen));
-            curve.p2 = Mobius::vector2(width(gen), height(gen));
-            curve.p3 = Mobius::vector2(width(gen), height(gen));
+            curve.p0 = vector2(width(gen), height(gen));
+            curve.p1 = vector2(width(gen), height(gen));
+            curve.p2 = vector2(width(gen), height(gen));
+            curve.p3 = vector2(width(gen), height(gen));
             curve.visualise();
 
             // Draw test point and find closest point on curve
-            Mobius::vector2 testPoint(width(gen) + xOffset, height(gen) + yOffset);
+            vector2 testPoint(width(gen) + xOffset, height(gen) + yOffset);
             Brain.Screen.setPenColor(vex::color::purple);
             Brain.Screen.setPenWidth(1);
             Brain.Screen.drawCircle(testPoint.x, testPoint.y, 3);
             float closestT = curve.calculateClosestT(testPoint, 5, iterations);
-            Mobius::vector2 posAtClosestT = curve.position(closestT);
+            vector2 posAtClosestT = curve.position(closestT);
             float radius = sqrt(pow(testPoint.x - posAtClosestT.x, 2) + pow(testPoint.y - posAtClosestT.y, 2));
             Brain.Screen.setPenColor(vex::color::cyan);
             Brain.Screen.setFillColor(vex::color::transparent);
@@ -202,11 +202,11 @@ void CubicBezier::test() {
             actionTaken = false;
         }
 
-        if (fabs(Controller1.Axis3.value()) > 3) {
+        if (std::abs(Controller1.Axis3.value()) > 3) {
             yOffset += -Controller1.Axis3.value() * moveSpeed;
             regenerate = true;
         }
-        if (fabs(Controller1.Axis4.value()) > 3) {
+        if (std::abs(Controller1.Axis4.value()) > 3) {
             xOffset += Controller1.Axis4.value() * moveSpeed;
             regenerate = true;
         }

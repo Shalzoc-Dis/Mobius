@@ -20,13 +20,28 @@ vex::brain       Brain;
 int main() {
     vexcodeInit();
 
-    Mobius::Robot::driveSpeed = 0.1f;
+    Mobius::Robot::driveSpeed = 1.0f;
     Mobius::Robot::controlState = Mobius::Robot::state::DRIVER_CONTROLLED;
 
     while (true) {
 
         Mobius::Robot::MotionCalculators();
-        
+
+        /*
+        // Spline testing
+        Mobius::Spline spline;
+        // Part 1
+        spline.points.push_back(Mobius::vector2(0, 0));
+        spline.points.push_back(Mobius::vector2(100, 0));
+        spline.points.push_back(Mobius::vector2(100, 100));
+        spline.points.push_back(Mobius::vector2(0, 100));
+        // Part 2
+        spline.points.push_back(Mobius::vector2(0, 100));
+        spline.points.push_back(Mobius::vector2(-100, 100));
+        spline.points.push_back(Mobius::vector2(-100, 200));
+        spline.points.push_back(Mobius::vector2(0, 200));
+        // This should look like an S shape
+        */
 
         // Allow other tasks to run
         vex::this_thread::sleep_for(50);
