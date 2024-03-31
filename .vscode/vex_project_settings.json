@@ -5,7 +5,7 @@
 	},
 	"project": {
 		"name": "Mobius",
-		"description": "",
+		"description": "This is the logic behing Vinculum 1422-2's robot for the 2024 VRC OverUnder",
 		"creationDate": "09/03/2024, 10:19:11",
 		"platform": "V5",
 		"language": "cpp",
