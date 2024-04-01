@@ -41,4 +41,8 @@ void vexcodeInit() {
     gps.calibrate();
     waitUntil(!gps.isCalibrating());
   }
+
+  // Initialise the field
+  field.init();
+  Brain.Screen.clearScreen();
 }

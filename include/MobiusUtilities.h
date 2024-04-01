@@ -4,6 +4,7 @@
 #include <vector>
 #include "Profiler.h"
 #include <random>
+#include <array>
 
 namespace Mobius {
 

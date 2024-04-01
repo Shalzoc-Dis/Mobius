@@ -1,5 +1,6 @@
 #pragma once
 #include <vex.h>
+#include "Field.h"
 
 
 // VEXcode devices
@@ -27,6 +28,8 @@ extern vex::encoder backEncoder;
 extern vex::inertial inertialSensor;
 // The robot's GPS (Game Positioning System) sensor. This works by optically tracking the robot's position on the field
 extern vex::gps gps;
+
+extern Mobius::Field field;
 
 
 extern vex::competition Competition;

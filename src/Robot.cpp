@@ -33,6 +33,7 @@ float width, length, height; // In cm
 
 // State
 state controlState;
+matchType currentMatchType;
 vector2 desiredVelocity;
 float desiredAngularVelocity;
 

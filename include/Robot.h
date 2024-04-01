@@ -65,6 +65,12 @@ namespace Robot {
     enum class state { AUTONOMOUS, DRIVER_CONTROLLED };
     // The current control state of the robot
     extern state controlState;
+
+    // TODO: Enum for the current type of match
+    enum class matchType { SKILLS, QUALIFICATION, ELIMINATION, AUTONOMOUS_SKILLS};
+    // The current match type the robot is playing
+    extern matchType currentMatchType;
+
     // The desired velocity of the robot in cm/s
     extern vector2 desiredVelocity;
     // The desired angular velocity of the robot in radians/s

@@ -13,6 +13,7 @@
 
 // A global instance of vex::brain used for printing to the V5 brain screen
 vex::brain       Brain;
+extern Mobius::Field field;
 
 // define your global instances of motors and other devices here
 
@@ -22,10 +23,13 @@ int main() {
 
     Mobius::Robot::driveSpeed = 1.0f;
     Mobius::Robot::controlState = Mobius::Robot::state::DRIVER_CONTROLLED;
+    Mobius::Robot::currentMatchType = Mobius::Robot::matchType::ELIMINATION;
 
     while (true) {
+        
+        field.draw(5, 5, 230);
 
-        Mobius::Robot::MotionCalculators();
+        //Mobius::Robot::MotionCalculators();
 
         /*
         // Spline testing
