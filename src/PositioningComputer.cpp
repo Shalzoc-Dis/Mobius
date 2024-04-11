@@ -63,6 +63,31 @@ void Robot::PositioningComputer() {
     // Inertial sensor
 
 
+    // Rotate the GPS heading based on its position on the robot
+    gpsPosition.angle -= Robot::gpsOffset.angle * M_PI / 180;
+    // Rotate everything such that the 0 degree point of the gps is where the blue elevation bars are
+    vector2 pos(gpsPosition.x, gpsPosition.y);
+    // velocity, acceleration
+    switch (Robot::GPS_0_Degree) {
+        case Robot::fieldSide::BLUE_BAR:
+            break;
+        case Robot::fieldSide::BLUE_FIELD:
+            pos = pos.rotate(-M_PI_2);
+            gpsPosition.angle -= M_PI_2;
+            break;
+        case Robot::fieldSide::RED_BAR:
+            pos = pos.rotate(M_PI);
+            gpsPosition.angle += M_PI;
+            break;
+        case Robot::fieldSide::RED_FIELD:
+            pos = pos.rotate(M_PI_2);
+            gpsPosition.angle += M_PI_2;
+            break;
+    }
+    gpsPosition.x = pos.x;
+    gpsPosition.y = pos.y;
+
+
     // Check for accuracy
     //TODO: Update with inertial sensor
     Robot::FieldCentricPosition = gpsPosition;

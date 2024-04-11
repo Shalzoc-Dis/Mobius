@@ -23,7 +23,8 @@ public:
         @param size The size of the field element in cm
         @param alliance The alliance of the field element belongs to
     */
-    FieldElement(FieldElement::type type, vector2 position, vector2 size, FieldElement::alliance alliance);
+    FieldElement(FieldElement::type type, vector2 position, vector2 size, FieldElement::alliance alliance) 
+     : m_elementType(type), m_position(position), m_size(size), m_alliance(alliance) {};
 
     ~FieldElement() {};
 

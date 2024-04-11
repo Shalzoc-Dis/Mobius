@@ -5,6 +5,7 @@
 #include "Profiler.h"
 #include <random>
 #include <array>
+//#include "Bezier.h"
 
 namespace Mobius {
 
@@ -137,14 +138,26 @@ struct Position {
 
 // This is a struct to represent a point on a path which specifies a position and a rotation the robot should have at that point
 
-struct PathNode {
-    Position position;
-    vector2 incomingControlPoint;
-    vector2 outgoingControlPoint;
+// This is to contain a path. Each note on the path has a position and a rotation
+struct CubicBezier;
+struct Path {
+    std::vector<Position> m_points;
 
-    PathNode();
-    PathNode(Position position, vector2 incomingControlPoint, vector2 outgoingControlPoint);
-    ~PathNode();
+    Path() {};
+    ~Path() {};
+
+    // @brief Draws the path on the Brain's Screen
+    void visualise();
+
+    // @brief returns the length of the path in cm
+    float length();
+    // @return the number of curves in the path
+    uint8_t numCurves();
+
+    // @brief Returns a reference to the nth curve in the path
+    // @param n The index of the curve, starting at 0
+    Mobius::CubicBezier& getNthCurve(uint8_t n) {};
+
 };
 
 } // namespace Mobius

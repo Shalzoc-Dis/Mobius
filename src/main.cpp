@@ -23,13 +23,29 @@ int main() {
 
     Mobius::Robot::driveSpeed = 1.0f;
     Mobius::Robot::controlState = Mobius::Robot::state::DRIVER_CONTROLLED;
+    Mobius::Robot::currentControlMode = Mobius::Robot::controlMode::FIELD_CENTRIC;
     Mobius::Robot::currentMatchType = Mobius::Robot::matchType::ELIMINATION;
+
+    Mobius::Robot::driverSide = Mobius::Robot::fieldSide::RED_BAR;
+    Mobius::Robot::GPS_0_Degree = Mobius::Robot::fieldSide::BLUE_BAR;
+
+    vex::task tControllerHUD(Mobius::Robot::ControllerHUD);
 
     while (true) {
         
-        field.draw(5, 5, 230);
+        // A toggles field centric and robot centric positioning
+        Controller1.ButtonA.pressed([]() {
+            if (Mobius::Robot::currentControlMode == Mobius::Robot::controlMode::FIELD_CENTRIC)
+                Mobius::Robot::currentControlMode = Mobius::Robot::controlMode::ROBOT_CENTRIC;
+            else
+                Mobius::Robot::currentControlMode = Mobius::Robot::controlMode::FIELD_CENTRIC;
+        });
 
-        //Mobius::Robot::MotionCalculators();
+        
+        //field.draw(5, 5, 230);
+
+        Mobius::Robot::PositioningComputer();
+        Mobius::Robot::MotionCalculators();
 
         /*
         // Spline testing
@@ -47,7 +63,8 @@ int main() {
         // This should look like an S shape
         */
 
+
         // Allow other tasks to run
-        vex::this_thread::sleep_for(50);
+        vex::this_thread::sleep_for(100);
     }
 }

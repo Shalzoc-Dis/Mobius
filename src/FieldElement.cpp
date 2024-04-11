@@ -44,7 +44,8 @@ void FieldElement::draw(uint16_t x, uint16_t y, uint16_t width, uint16_t height)
             break;
         case FieldElement::type::LOW_BARRIER:
             // Draw a low barrier
-            Brain.Screen.setFillColor("#666666");  // Set the color to gray
+            //Brain.Screen.setFillColor("#666666");  // Set the color to gray
+            Brain.Screen.setFillColor(vex::color::purple);
             Brain.Screen.setPenColor(vex::color::black);
             Brain.Screen.setPenWidth(1);
             Brain.Screen.drawRectangle(x - width/2, y - height/2, width, height);

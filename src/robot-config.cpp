@@ -1,4 +1,5 @@
 #include "robot-config.h"
+#include "Robot.h"
 
 
 // vex::motor M_FL = vex::motor(vex::PORT1, vex::gearSetting::ratio18_1, bool reversed);
@@ -13,7 +14,7 @@ vex::encoder rightEncoder = vex::encoder(Brain.ThreeWirePort.A);  // Top wire is
 vex::encoder backEncoder = vex::encoder(Brain.ThreeWirePort.E);
 
 vex::inertial inertialSensor = vex::inertial(vex::PORT1);
-vex::gps gps = vex::gps(vex::PORT2, 0, 0, vex::distanceUnits::mm, 0);
+vex::gps gps = vex::gps(vex::PORT20, Mobius::Robot::gpsOffset.x, Mobius::Robot::gpsOffset.y, vex::distanceUnits::mm, 360 - Mobius::Robot::gpsOffset.angle, vex::turnType::left);
 
 vex::controller Controller1 = vex::controller(vex::controllerType::primary);
 

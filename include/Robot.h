@@ -18,6 +18,11 @@ namespace Robot {
     // Internal Information
     // Position of the Robot according to the field. 0, 0 is in the middle of the field
     extern Position FieldCentricPosition;
+
+    // This is to adjust for the position of the GPS strips. This enum stats where 0 degrees is
+    // This is also used to determind where the drivers are standing
+    enum class fieldSide { RED_FIELD, BLUE_FIELD, BLUE_BAR, RED_BAR };
+
     // The position on the field the robot wants to be at
     extern Position desiredPosition;
     // The angle between the front of the robot and a line between it and the desired position
@@ -51,7 +56,7 @@ namespace Robot {
     // @param x distance to the right
     // @param y distance forwards
     // @param angle angle from the front of the robot
-    const Position gpsOffset(0, 0, 0);
+    extern Position gpsOffset;
 
     // This is the bias of the mecanum wheels. The more powerful direction is the lower number, which acts as a multiplier 
     // for the motor movements in that direction in order to make the robot move perfectly. This accounts for the friction in 
@@ -63,8 +68,10 @@ namespace Robot {
 
     // Enum for the current control state of the robot
     enum class state { AUTONOMOUS, DRIVER_CONTROLLED };
+    enum class controlMode { FIELD_CENTRIC, ROBOT_CENTRIC };
     // The current control state of the robot
     extern state controlState;
+    extern controlMode currentControlMode;
 
     // TODO: Enum for the current type of match
     enum class matchType { SKILLS, QUALIFICATION, ELIMINATION, AUTONOMOUS_SKILLS};
@@ -79,6 +86,10 @@ namespace Robot {
     // Competition field information
     extern Field field;
 
+    // Drivers POV
+    extern fieldSide driverSide;
+    extern fieldSide GPS_0_Degree;
+
     // Timers
     // Timer to calculate the delta time for the positioning computer
     extern vex::timer PositioningComputerUpdateTimer;
@@ -88,10 +99,16 @@ namespace Robot {
     void MotionCalculators();
     // Calculates the robot's position, velocity, and acceleration
     void PositioningComputer();
+
+    // Give the user feedback
+    int ControllerHUD();
+    
 } // namespace Robot
 
 // Essential functionality
 int RobotOdometry();
+
+
 
 
 

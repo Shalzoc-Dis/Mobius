@@ -47,8 +47,25 @@ void Robot::MotionCalculators() {
             // The second derivative of the bezier curve gives us the direction it wants us to go
             // The magnitude of this can be ignored because it the robot's desired speed is defined elsewhere
 
+
+            // If the robot is in field centric mode, rotate the desired velocity by the angle of the robot
+            // TODO: Adjust for driver side
+            if (Robot::currentControlMode == Robot::controlMode::FIELD_CENTRIC) {
+                // Rotate the desired velocity by the angle of the robot
+                switch (Robot::driverSide) {
+                    case Robot::fieldSide::RED_BAR:
+                        Robot::desiredVelocity = Robot::desiredVelocity.rotate(-Robot::FieldCentricPosition.angle);
+                    break;
+                    case Robot::fieldSide::BLUE_BAR:
+                        Robot::desiredVelocity = Robot::desiredVelocity.rotate(-Robot::FieldCentricPosition.angle + M_PI);
+                    break;
+                }
+                Robot::desiredVelocity = Robot::desiredVelocity.rotate(-Robot::FieldCentricPosition.angle);
+            }
         break;
     }
+
+    
 
     // Calculations
 
