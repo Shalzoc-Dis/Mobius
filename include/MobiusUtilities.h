@@ -96,6 +96,13 @@ struct vector2 {
             res.y = x * sin(angle) + y * cos(angle); 
             return res;
         }
+
+        // @brief Calculate the dot product of two vectors
+        // @param obj The other vector
+        float dot(vector2 obj) {
+            return x * obj.x + y * obj.y;
+        }
+
     }; // struct vector2
 
 // A struct to represent a position on a field made up of a 2D vector and an angle

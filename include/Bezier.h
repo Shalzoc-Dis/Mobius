@@ -2,11 +2,11 @@
 
 #include "MobiusUtilities.h"
 
+extern vex::brain Brain;
 namespace Mobius {
 
 // Reference: https://en.wikipedia.org/wiki/Bézier_curve
 // A struct to represent a cubic bezier curve
-extern vex::brain Brain;
 struct CubicBezier {
     vector2 p0, p1, p2, p3;
 

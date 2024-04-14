@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*    Module:       main.cpp                                                  */
-/*    Author:       hypatia                                                   */
+/*    Author:       Hypatia                                                   */
 /*    Created:      09/03/2024, 10:19:11                                      */
 /*    Description:  V5 project                                                */
 /*                                                                            */
@@ -19,48 +19,40 @@ extern Mobius::Field field;
 
 
 int main() {
-    vexcodeInit();
-
-    Mobius::Robot::driveSpeed = 1.0f;
-    Mobius::Robot::controlState = Mobius::Robot::state::DRIVER_CONTROLLED;
-    Mobius::Robot::currentControlMode = Mobius::Robot::controlMode::FIELD_CENTRIC;
-    Mobius::Robot::currentMatchType = Mobius::Robot::matchType::ELIMINATION;
-
-    Mobius::Robot::driverSide = Mobius::Robot::fieldSide::RED_BAR;
-    Mobius::Robot::GPS_0_Degree = Mobius::Robot::fieldSide::BLUE_BAR;
 
     vex::task tControllerHUD(Mobius::Robot::ControllerHUD);
 
+    // Set up callbacks for autonomous and driver control periods.
+    Competition.autonomous(Mobius::Robot::autonomous);
+    Competition.drivercontrol(Mobius::Robot::teleOp);
+
+    // Run the pre-autonomous function.
+    Mobius::Robot::init();
+
+    
+
+       
+
+    /*
+    // Spline testing
+    Mobius::Spline spline;
+    // Part 1
+    spline.points.push_back(Mobius::vector2(0, 0));
+    spline.points.push_back(Mobius::vector2(100, 0));
+    spline.points.push_back(Mobius::vector2(100, 100));
+    spline.points.push_back(Mobius::vector2(0, 100));
+    // Part 2
+    spline.points.push_back(Mobius::vector2(0, 100));
+    spline.points.push_back(Mobius::vector2(-100, 100));
+    spline.points.push_back(Mobius::vector2(-100, 200));
+    spline.points.push_back(Mobius::vector2(0, 200));
+    // This should look like an S shape
+    */
+
+
+    // Prevent main from exiting with an infinite loop.
     while (true) {
-
-        
-        
-        
-
-        
-        //field.draw(5, 5, 230);
-        Mobius::Robot::ManipulatorControl();
-        //Mobius::Robot::PositioningComputer();
-        Mobius::Robot::MotionCalculators();
-
-        /*
-        // Spline testing
-        Mobius::Spline spline;
-        // Part 1
-        spline.points.push_back(Mobius::vector2(0, 0));
-        spline.points.push_back(Mobius::vector2(100, 0));
-        spline.points.push_back(Mobius::vector2(100, 100));
-        spline.points.push_back(Mobius::vector2(0, 100));
-        // Part 2
-        spline.points.push_back(Mobius::vector2(0, 100));
-        spline.points.push_back(Mobius::vector2(-100, 100));
-        spline.points.push_back(Mobius::vector2(-100, 200));
-        spline.points.push_back(Mobius::vector2(0, 200));
-        // This should look like an S shape
-        */
-
-
-        // Allow other tasks to run
-        vex::this_thread::sleep_for(100);
+        vex::wait(100, vex::msec);
     }
+
 }

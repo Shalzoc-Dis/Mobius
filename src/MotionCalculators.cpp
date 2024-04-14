@@ -12,13 +12,6 @@ void Robot::MotionCalculators() {
         case Robot::state::AUTONOMOUS:
         break;
         case Robot::state::DRIVER_CONTROLLED:
-            // A toggles field centric and robot centric positioning
-            Controller1.ButtonA.pressed([]() {
-                if (Mobius::Robot::currentControlMode == Mobius::Robot::controlMode::FIELD_CENTRIC)
-                    Mobius::Robot::currentControlMode = Mobius::Robot::controlMode::ROBOT_CENTRIC;
-                else
-                    Mobius::Robot::currentControlMode = Mobius::Robot::controlMode::FIELD_CENTRIC;
-            });
 
             // Take in the direction the joysticks are pointing
             // Take in the current position of the robot
@@ -70,7 +63,28 @@ void Robot::MotionCalculators() {
                         break;
                     break;
                 }
+                // TODO Dash
+                // If the robot is in field centric mode, X can be pressed while moving. 
+                // Dash means the robot turns to face in (or away from) the direction of desired movement. it travels faster forwards and backwards
+                // If the angle it would have to spin is close to 90 degrees, is prefers the orientation that causes the triball to face in the direction of the goal
+                if (Controller1.ButtonX.pressing() && Robot::desiredVelocity.magnitude() > 0.1f){
+                    // The dot product of two vectors is ||a|| ||b|| cos(theta)
+                    // It is 0 if the vectors are perpendicular
+                    vector2 direction(cos(Robot::FieldCentricPosition.angle), sin(Robot::FieldCentricPosition.angle));
+                    float dot = direction.dot(Robot::desiredVelocity.normalised());
+                    // If the dot product is grater than 0.2, the robot should face the direction of the desired velocity
+                    // If the dot product is less than -0.2, the robot should face away from the direction of the desired velocity
+                    // If the dot product is between -0.2 and 0.2, the robot should face along the direction of movement, but towards the goal
+                    if (dot > 0.2f) {
+                        
+                    }
+
+                }
+
             }
+
+            
+
         break;
     }
 

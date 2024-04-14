@@ -3,20 +3,7 @@
 namespace Mobius { namespace Robot {
 
 void Robot::ManipulatorControl() {
-    // Controller1
-    // - Axis 1:    Robot rotation in driver control
-    // - Axis 2:    Nothing
-    // - Axis 3:    Front-Back drivetrain translation
-    // - Axis 4:    Left-Right drivetrain translation
-    // - Button A:  Toggle field centric and robot centric positioning
-    // - Button B:  Nothing
-    // - Button X:  //TODO Dash mode (robot turns to face the movement direction in driver control and field centric mode)
-    // - Button Y:  Nothing
-    // - R1:        //Intake in
-    // - R2:        //Intake out
-    // - L1:        //TODO Robot speed high
-    // - L2:        //TODO Robot speed low
-
+    
 
     // Intake
     if (Controller1.ButtonR1.pressing()) {

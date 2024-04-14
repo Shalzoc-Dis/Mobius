@@ -6,15 +6,16 @@
 #include "Bezier.h"
 #include "Field.h"
 
+extern vex::competition Competition;
+extern vex::brain Brain;
 namespace Mobius {
 
     // ------------------------------------- Global constant information -----------------------------------------------------
 namespace Robot {
-    extern vex::brain Brain;
+    extern vex::controller Controller1;
+    extern Mobius::Field field;
 
-    float maxVelocityInDirection(float angle);
-    float maxAngularVelocity(vector2 velocity);
-
+    
     // Internal Information
     // Position of the Robot according to the field. 0, 0 is in the middle of the field
     extern Position FieldCentricPosition;
@@ -74,9 +75,12 @@ namespace Robot {
     extern controlMode currentControlMode;
 
     // TODO: Enum for the current type of match
-    enum class matchType { SKILLS, QUALIFICATION, ELIMINATION, AUTONOMOUS_SKILLS};
+    enum class matchType { SKILLS, HEAD_TO_HEAD, AUTONOMOUS_SKILLS};
     // The current match type the robot is playing
     extern matchType currentMatchType;
+
+    // Weather the robot can use a gps or not
+    extern bool gpsAvailable;
 
     // The desired velocity of the robot in cm/s
     extern vector2 desiredVelocity;
@@ -84,7 +88,6 @@ namespace Robot {
     extern float desiredAngularVelocity;
 
     // Competition field information
-    extern Field field;
 
     // Drivers POV
     extern fieldSide driverSide;
@@ -93,6 +96,8 @@ namespace Robot {
     // Timers
     // Timer to calculate the delta time for the positioning computer
     extern vex::timer PositioningComputerUpdateTimer;
+    // Timer for the current control period
+    extern vex::timer controlPeriodTimer;
 
 
     // Listens to the control state of the robot and calculates how it needs to move to either follow a path or the controller
@@ -101,11 +106,20 @@ namespace Robot {
     void PositioningComputer();
     // Update the manipulators
     void ManipulatorControl();
+    // Create callbacks for controller actions
+    void ControllerCallbacks();
 
     // Give the user feedback
     int ControllerHUD();
-    
+
+
+    // Functions for competition
+    void autonomous();
+    void teleOp();
+    void init();
+   
 } // namespace Robot
+
 
 // Essential functionality
 int RobotOdometry();
