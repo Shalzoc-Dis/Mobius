@@ -17,15 +17,9 @@ extern vex::motor backLeftWheel;
 // The motor of the back right mecanum wheel
 extern vex::motor backRightWheel;
 
-// The left odometry encoder
-extern vex::encoder leftEncoder;
-// The right odometry encoder
-extern vex::encoder rightEncoder;
-// The back odometry encoder
-extern vex::encoder backEncoder;
+// The motor for the intake roller
+extern vex::motor intakeMotor;
 
-// The inertial sensor
-extern vex::inertial inertialSensor;
 // The robot's GPS (Game Positioning System) sensor. This works by optically tracking the robot's position on the field
 extern vex::gps gps;
 

@@ -12,7 +12,14 @@ void Robot::MotionCalculators() {
         case Robot::state::AUTONOMOUS:
         break;
         case Robot::state::DRIVER_CONTROLLED:
-            // TODO: Take joystick input and get desired direction from that.
+            // A toggles field centric and robot centric positioning
+            Controller1.ButtonA.pressed([]() {
+                if (Mobius::Robot::currentControlMode == Mobius::Robot::controlMode::FIELD_CENTRIC)
+                    Mobius::Robot::currentControlMode = Mobius::Robot::controlMode::ROBOT_CENTRIC;
+                else
+                    Mobius::Robot::currentControlMode = Mobius::Robot::controlMode::FIELD_CENTRIC;
+            });
+
             // Take in the direction the joysticks are pointing
             // Take in the current position of the robot
             // Take in the current motion of the robot
@@ -54,13 +61,15 @@ void Robot::MotionCalculators() {
                 // Rotate the desired velocity by the angle of the robot
                 switch (Robot::driverSide) {
                     case Robot::fieldSide::RED_BAR:
-                        Robot::desiredVelocity = Robot::desiredVelocity.rotate(-Robot::FieldCentricPosition.angle);
-                    break;
+                        break;
                     case Robot::fieldSide::BLUE_BAR:
-                        Robot::desiredVelocity = Robot::desiredVelocity.rotate(-Robot::FieldCentricPosition.angle + M_PI);
+                        break;
+                    case Robot::fieldSide::RED_FIELD:
+                        break;
+                    case Robot::fieldSide::BLUE_FIELD:
+                        break;
                     break;
                 }
-                Robot::desiredVelocity = Robot::desiredVelocity.rotate(-Robot::FieldCentricPosition.angle);
             }
         break;
     }

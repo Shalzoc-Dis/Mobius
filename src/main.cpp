@@ -12,7 +12,7 @@
 
 
 // A global instance of vex::brain used for printing to the V5 brain screen
-vex::brain       Brain;
+extern vex::brain       Brain;
 extern Mobius::Field field;
 
 // define your global instances of motors and other devices here
@@ -32,19 +32,15 @@ int main() {
     vex::task tControllerHUD(Mobius::Robot::ControllerHUD);
 
     while (true) {
+
         
-        // A toggles field centric and robot centric positioning
-        Controller1.ButtonA.pressed([]() {
-            if (Mobius::Robot::currentControlMode == Mobius::Robot::controlMode::FIELD_CENTRIC)
-                Mobius::Robot::currentControlMode = Mobius::Robot::controlMode::ROBOT_CENTRIC;
-            else
-                Mobius::Robot::currentControlMode = Mobius::Robot::controlMode::FIELD_CENTRIC;
-        });
+        
+        
 
         
         //field.draw(5, 5, 230);
-
-        Mobius::Robot::PositioningComputer();
+        Mobius::Robot::ManipulatorControl();
+        //Mobius::Robot::PositioningComputer();
         Mobius::Robot::MotionCalculators();
 
         /*

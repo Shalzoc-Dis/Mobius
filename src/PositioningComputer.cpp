@@ -44,7 +44,7 @@ void Robot::PositioningComputer() {
     // Calculate the velocity based on change in position
     vector2 gpsVelocityByPosition;
     gpsLastPosition = gpsPosition;
-    gpsPosition = Position(gps.xPosition(), gps.yPosition(), gps.heading() / 180 * M_PI);
+    gpsPosition = Position(gps.xPosition(), gps.yPosition(), ( 360 - gps.heading()) * M_PI / 180.0f);   // The 360 - gps.heading() to make the heading, which is cw, ccw 
     gpsVelocityByPosition.x = (gpsPosition.x - gpsLastPosition.x) / timeSinceLastUpdate;
     gpsVelocityByPosition.y = (gpsPosition.y - gpsLastPosition.y) / timeSinceLastUpdate;
 
@@ -63,8 +63,6 @@ void Robot::PositioningComputer() {
     // Inertial sensor
 
 
-    // Rotate the GPS heading based on its position on the robot
-    gpsPosition.angle -= Robot::gpsOffset.angle * M_PI / 180;
     // Rotate everything such that the 0 degree point of the gps is where the blue elevation bars are
     vector2 pos(gpsPosition.x, gpsPosition.y);
     // velocity, acceleration
@@ -86,6 +84,9 @@ void Robot::PositioningComputer() {
     }
     gpsPosition.x = pos.x;
     gpsPosition.y = pos.y;
+
+    printf("Position: %0.2f, %0.2f, %0.2f\n", gpsPosition.x, gpsPosition.y, gpsPosition.angle * 180 / M_PI);
+    printf("Quality: %f\n\n", gps.quality());
 
 
     // Check for accuracy

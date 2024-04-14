@@ -99,6 +99,8 @@ namespace Robot {
     void MotionCalculators();
     // Calculates the robot's position, velocity, and acceleration
     void PositioningComputer();
+    // Update the manipulators
+    void ManipulatorControl();
 
     // Give the user feedback
     int ControllerHUD();

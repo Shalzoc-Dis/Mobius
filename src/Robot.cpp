@@ -16,6 +16,9 @@ float Mobius::Robot::maxAngularVelocity(vector2 velocity) {
 
 
 namespace Mobius { namespace Robot {
+
+vex::brain Brain;
+
 // Implementations of the vaiables in Robot.h
 Position FieldCentricPosition(0, 0, 0);
 Position desiredPosition(0, 0, 0);
@@ -43,30 +46,7 @@ fieldSide driverSide;
 fieldSide GPS_0_Degree;
 
 
-int ControllerHUD() {
-while (true) {
-    Controller1.Screen.clearScreen();
-    // Field Centric or Robot Centric Control
-    Controller1.Screen.setCursor(1, 1);
-    if (Robot::currentControlMode == Robot::controlMode::FIELD_CENTRIC)
-        Controller1.Screen.print("FC");
-    else
-        Controller1.Screen.print("RC");
 
-    // Position
-    Controller1.Screen.setCursor(2, 1);
-    Controller1.Screen.print("X: %0.2f, Y: %0.2f", Robot::FieldCentricPosition.x, Robot::FieldCentricPosition.y);
-    Controller1.Screen.setCursor(3, 1);
-    Controller1.Screen.print("Head: %d", (int)(Robot::FieldCentricPosition.angle * 180 / M_PI));
-
-    // Debug
-    Controller1.Screen.setCursor(1, 4);
-    Controller1.Screen.print("GPSH: %d", (int)gps.heading());
-
-
-    vex::task::sleep(750);
-}   
-}
 
 } // namespace Mobius::Robot   
 } // namespace Mobius
