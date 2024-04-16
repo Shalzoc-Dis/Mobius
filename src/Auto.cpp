@@ -98,6 +98,7 @@ void Action::followCurve(Mobius::CubicBezier curve, float precision, float speed
 
 void Action::turn(float angle, float speed, Mobius::rotationUnits units) {
     // Turn the robot
+    Robot::desiredAngularVelocity = angle * speed;
 }
 
 void Action::run() {

@@ -11,6 +11,8 @@ void Robot::MotionCalculators() {
 
     switch (Robot::controlState) {
         case Robot::state::AUTONOMOUS:
+            rotation = Robot::desiredAngularVelocity;
+
         break;
         case Robot::state::DRIVER_CONTROLLED:
 
@@ -52,19 +54,24 @@ void Robot::MotionCalculators() {
 
             // If the robot is in field centric mode, rotate the desired velocity by the angle of the robot
             if (Robot::currentControlMode == Robot::controlMode::FIELD_CENTRIC) {
-                // Rotate the desired velocity by the angle of the robot
+                
+                // Rotate the desired velocity by the angle of the robot 
+                printf("DV: %.1f\n", Robot::desiredVelocity.angle() * 180.0f / M_PI);
+                Robot::desiredVelocity = Robot::desiredVelocity.rotated(M_TWOPI - Robot::FieldCentricPosition.angle);
+                printf("DVA: %.1f\n\n", Robot::desiredVelocity.angle() * 180.0f / M_PI);
+
                 switch (Robot::driverSide) {
                     case Robot::fieldSide::RED_BAR:
                         // The 0 degree heading is what the controller sees; no adjustment needed
                         break;
                     case Robot::fieldSide::BLUE_BAR:
-                        Robot::desiredVelocity = Robot::desiredVelocity.rotate(M_PI);
+                        Robot::desiredVelocity = Robot::desiredVelocity.rotated(M_PI);
                         break;
                     case Robot::fieldSide::RED_GOAL:
-                        Robot::desiredVelocity = Robot::desiredVelocity.rotate(-M_PI_2);
+                        Robot::desiredVelocity = Robot::desiredVelocity.rotated(M_PI_2);
                         break;
                     case Robot::fieldSide::BLUE_GOAL:
-                        Robot::desiredVelocity = Robot::desiredVelocity.rotate(M_PI_2);
+                        Robot::desiredVelocity = Robot::desiredVelocity.rotated(M_PI_2);
                         break;
                     break;
 
@@ -73,7 +80,6 @@ void Robot::MotionCalculators() {
                 //printf("Angle %f\n", Robot::desiredVelocity.rotate(-M_PI_2).angle() * 180 / M_PI);
                 //printf("current angle %f\n\n", Robot::FieldCentricPosition.angle * 180 / M_PI);
 
-                Robot::desiredVelocity.rotate(Robot::FieldCentricPosition.angle); // FIXME desired velocity is not returning expected values
 
                 // TODO Dash
                 // If the robot is in field centric mode, X can be pressed while moving. 
@@ -112,7 +118,9 @@ void Robot::MotionCalculators() {
     float angularVel_BL = 0.0f;
     float angularVel_BR = 0.0f;
 
-    vector2 v = Robot::desiredVelocity.rotate(-M_PI_2); // 0 in this formula is forwards, while 0 for the robot is right
+    Robot::desiredVelocity.rotate(M_PI_2);
+    vector2 v = Robot::desiredVelocity; // 0 in this formula is forwards, while 0 for the robot is right
+    printf("MotionCalculator Val: %0.1f, %0.1f\n", v.x, v.y);
     vector2 l = Robot::wheelOffset; l.x /= 100.0f; l.y /= 100.0f;   // Convert to metres
     float r = Robot::wheelRadius / 100.0f; // Convert to metres
 

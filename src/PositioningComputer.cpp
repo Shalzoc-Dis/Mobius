@@ -45,7 +45,7 @@ while (true) {
     // Calculate the velocity based on change in position
     vector2 gpsVelocityByPosition;
     gpsLastPosition = gpsPosition;
-    gpsPosition = Position(gps.xPosition(), gps.yPosition(), ( 360 - gps.heading()) * M_PI / 180.0f);   // The 360 - gps.heading() to make the heading, which is cw, ccw 
+    gpsPosition = Position(gps.xPosition(), gps.yPosition(), (gps.heading() * M_PI / 180.0f));   // The 360 - gps.heading() to make the heading, which is cw, ccw 
     gpsVelocityByPosition.x = (gpsPosition.x - gpsLastPosition.x) / timeSinceLastUpdate;
     gpsVelocityByPosition.y = (gpsPosition.y - gpsLastPosition.y) / timeSinceLastUpdate;
 
@@ -71,20 +71,22 @@ while (true) {
         case Robot::fieldSide::BLUE_BAR:
             break;
         case Robot::fieldSide::BLUE_GOAL:
-            pos = pos.rotate(-M_PI_2);
+            pos = pos.rotated(-M_PI_2);
             gpsPosition.angle -= M_PI_2;
             break;
         case Robot::fieldSide::RED_BAR:
-            pos = pos.rotate(M_PI);
+            pos = pos.rotated(M_PI);
             gpsPosition.angle += M_PI;
             break;
         case Robot::fieldSide::RED_GOAL:
-            pos = pos.rotate(M_PI_2);
+            pos = pos.rotated(M_PI_2);
             gpsPosition.angle += M_PI_2;
             break;
     }
     gpsPosition.x = pos.x;
     gpsPosition.y = pos.y;
+    if (gpsPosition.angle >= M_TWOPI)
+        gpsPosition.angle -= M_TWOPI;
 
     //printf("Position: %0.2f, %0.2f, %0.2f\n", gpsPosition.x, gpsPosition.y, gpsPosition.angle * 180 / M_PI);
     //printf("Quality: %ld\n\n", gps.quality());

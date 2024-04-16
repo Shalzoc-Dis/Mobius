@@ -44,6 +44,37 @@ void autonomous() {
     printf("Autonomous\n");
     // Implement autonomous here
     Mobius::Robot::controlState = Mobius::Robot::state::AUTONOMOUS;
+
+    frontLeftWheel.spin(vex::directionType::fwd);
+    frontRightWheel.spin(vex::directionType::fwd);
+    backLeftWheel.spin(vex::directionType::fwd);
+    backRightWheel.spin(vex::directionType::fwd);
+    
+    vex::wait(2, vex::timeUnits::sec);
+
+
+    frontLeftWheel.spin(vex::directionType::rev);
+    frontRightWheel.spin(vex::directionType::rev);
+    backLeftWheel.spin(vex::directionType::fwd);
+    backRightWheel.spin(vex::directionType::fwd);
+
+    vex::wait(2, vex::timeUnits::sec);
+
+
+    frontLeftWheel.stop();
+    frontRightWheel.stop();
+    backLeftWheel.stop();
+    backRightWheel.stop();
+
+    while (Robot::controlState == Robot::state::AUTONOMOUS) {
+    
+
+        Mobius::Robot::ManipulatorControl();
+        Mobius::Robot::MotionCalculators();
+
+        vex::task::sleep(20);
+
+    }
 }
 
 void teleOp() {
@@ -51,7 +82,7 @@ void teleOp() {
     // Implement usercontrol here
     Mobius::Robot::controlState = Mobius::Robot::state::DRIVER_CONTROLLED;
 
-    while (true) {
+    while (Robot::controlState == Mobius::Robot::state::DRIVER_CONTROLLED) {
         //field.draw(5, 5, 230);
         Mobius::Robot::ManipulatorControl();
         Mobius::Robot::MotionCalculators();
@@ -73,10 +104,12 @@ void init() {
         waitUntil(!gps.isCalibrating());
     }
 
-    if (gps.heading() == 360)
+    if (gps.heading() == 360 || gps.quality() < 40)
         Mobius::Robot::gpsAvailable = false;
-    else 
+    else {
+        printf("GPS Locked\n");
         Mobius::Robot::gpsAvailable = true;
+    }
 
     // Set the intake motor
     intakeMotor.setStopping(vex::brakeType::hold);
@@ -88,10 +121,10 @@ void init() {
 
     if (Competition.isCompetitionSwitch()) {
         Brain.Screen.print("Competition Switch");
-        inCompetition = true;
+        Robot::inCompetition = true;
     } else {
         Brain.Screen.print("No Competition Switch");
-        inCompetition = false;
+        Robot::inCompetition = false;
     }
 
     Mobius::Robot::driveSpeed = 1.0f;
@@ -99,7 +132,8 @@ void init() {
     Mobius::Robot::currentMatchType = Mobius::Robot::matchType::HEAD_TO_HEAD;
 
     Mobius::Robot::driverSide = Mobius::Robot::fieldSide::RED_BAR;
-    Mobius::Robot::GPS_0_Degree = Mobius::Robot::fieldSide::BLUE_BAR;
+    // Middle field has the red bar at 0 degrees
+    Mobius::Robot::GPS_0_Degree = Mobius::Robot::fieldSide::RED_BAR;
 
     ControllerCallbacks();
 }

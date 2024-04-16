@@ -103,13 +103,26 @@ struct vector2 {
 
         // @brief Rotate the vector counter-clockwise by a given angle
         // @param angle The angle in radians
-        vector2 rotate(float angle) {
+        vector2 rotated(float angle) {
             // Reference: https://matthew-brett.github.io/teaching/rotation_2d.html
-            vector2 res;
-            res.x = x * cos(angle) - y * sin(angle);
-            res.y = x * sin(angle) + y * cos(angle); 
+            vector2 res(0, 0);
+            res.x = (cos(angle) * x) - (sin(angle) * y);
+            res.y = (sin(angle) * x) + (cos(angle) * y); 
             return res;
         }
+
+
+        // @brief Rotate the vector counter-clockwise by a given angle
+        // @param angle The angle in radians
+        void rotate(float angle) {
+            // Reference: https://matthew-brett.github.io/teaching/rotation_2d.html
+            //if (this->x != 0.0f && this->y != 0.0f) {
+                x = (cos(angle) * x) - (sin(angle) * y);
+                y = (sin(angle) * x) + (cos(angle) * y); 
+                printf("Rotation applied (%f)\n", angle);
+            //}
+        }
+
 
         // @brief Calculate the dot product of two vectors
         // @param obj The other vector
@@ -126,7 +139,7 @@ struct Position {
 
     // @param position The position of the robot as a 2D vector
     // @param angle The angle of the robot in radians
-    Position(vector2 position, float angle)
+    Position(Mobius::vector2 position, float angle)
      : x(position.x), y(position.y), angle(angle) {}
 
     // @param x The x coordinate of the robot

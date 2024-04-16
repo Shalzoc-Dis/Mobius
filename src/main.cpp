@@ -22,6 +22,26 @@ void testing();
 
 int main() {
 
+    Mobius::vector2 testVec(1, 0);
+    Mobius::vector2 newVec(0, 0);
+    printf("TV  %0.3f, %0.3f\n", testVec.x, testVec.y);
+    newVec = testVec.rotated(M_PI_2);
+    printf("NV rotated by pi/2 %0.3f, %0.3f\n", newVec.x, newVec.y);
+    newVec = testVec.rotated(M_PI);
+    printf("NV rotated by pi %0.3f, %0.3f\n", newVec.x, newVec.y);
+
+    return 0;
+    for (int i = 0; i <= 90; i++)
+    {
+        testVec.rotate(i * M_PI / 180.0f);
+        printf("TV %0.1f, %0.1f\n", testVec.x, testVec.y);
+        //printf("NV %0.1f, %0.1f\n", newVec.x, newVec.y);
+        printf("ROT %d\n\n", i);
+
+    }
+    return 0;
+    
+
     vex::task tControllerHUD(Mobius::Robot::ControllerHUD);
     vex::task tPositioningComputer(Mobius::Robot::PositioningComputer);
 
@@ -29,10 +49,10 @@ int main() {
     Mobius::Robot::init();
 
     // Testing only
-    tPositioningComputer.stop();
-    Mobius::Robot::FieldCentricPosition.x = 50;
-    Mobius::Robot::FieldCentricPosition.y = 50;
-    testing();
+    //tPositioningComputer.stop();
+    //Mobius::Robot::FieldCentricPosition.x = 50;
+    //Mobius::Robot::FieldCentricPosition.y = 50;
+    //testing();
 
 
     if (Mobius::Robot::inCompetition) {
@@ -68,6 +88,7 @@ int main() {
 
     // Prevent main from exiting with an infinite loop.
     while (true) {
+        /*
         if (Competition.isAutonomous())
             Mobius::Robot::controlState = Mobius::Robot::state::AUTONOMOUS;
         else if (Competition.isDriverControl())
@@ -75,6 +96,7 @@ int main() {
         else 
             Mobius::Robot::controlState = Mobius::Robot::state::DISABLED;
 
+        */
         vex::wait(100, vex::msec);
     }
 

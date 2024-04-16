@@ -48,6 +48,9 @@ struct Action {
     float m_speed;
     float m_angle;
     Mobius::rotationUnits m_rotationUnits;
+    Mobius::rotationUnits m_units;
+    Mobius::Robot::Path m_path;
+    double m_time;
 
 
     void followCurve(Mobius::CubicBezier curve, float precision, float speed = 1);
