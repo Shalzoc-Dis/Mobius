@@ -50,7 +50,7 @@ struct Action {
     Mobius::rotationUnits m_rotationUnits;
 
 
-    void followCurve(Mobius::CubicBezier& curve, float precision, float speed = 1);
+    void followCurve(Mobius::CubicBezier curve, float precision, float speed = 1);
     void turn(float angle, float speed, Mobius::rotationUnits units);
     void followPath(const Path& path);
 
@@ -71,7 +71,7 @@ struct Action {
     // @param curve The curve to follow
     // @param precision The step size
     // @param speed The parametric speed of the robot
-    Action(Mobius::CubicBezier& curve, float precision, float speed = 1)
+    Action(Mobius::CubicBezier curve, float precision, float speed = 1)
      : m_curve(curve), m_precision(precision), m_speed(speed) { m_type = Action::Type::FOLLOW_CURVE; };
 
     // @brief An action to turn the robot
@@ -112,8 +112,8 @@ struct AutonomousPlan {
     state m_state;
     std::vector<Action> m_actions;
 
-    AutonomousPlan();
-    ~AutonomousPlan();
+    AutonomousPlan() {};
+    ~AutonomousPlan() {};
 
     // @brief This function runs the plan. It performs one action at a time
     void execute();

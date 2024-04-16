@@ -21,57 +21,59 @@ int Robot::ControllerHUD() {
     vex::timer controlPeriodTimer;
 
 while (true) {
-    Controller1.Screen.clearScreen();
+    if (Controller1.installed()) {
+        Controller1.Screen.clearScreen();
 
-    // Speed
-    Controller1.Screen.setCursor(1, 1);
-    Controller1.Screen.print("D%d", (int)(Robot::driveSpeed * 100.0f));
+        // Speed
+        Controller1.Screen.setCursor(1, 1);
+        Controller1.Screen.print("D%d", (int)(Robot::driveSpeed * 100.0f));
 
-       
-
-
-    // If under driver control
-    if (inCompetition && !Competition.isEnabled()) {
-        Controller1.Screen.setCursor(1, 7);
-        Controller1.Screen.print("DISABLED");
-
-    } else if (Robot::controlState == Robot::state::DRIVER_CONTROLLED) {
-
-        // Field Centric or Robot Centric Control
-        Controller1.Screen.setCursor(1, 11);
-        if (Robot::currentControlMode == Robot::controlMode::FIELD_CENTRIC)
-            Controller1.Screen.print("FC");
-        else
-            Controller1.Screen.print("RC");
         
-    } else {
-        // If under autonomous control
-        Controller1.Screen.setCursor(1, 11);
-        Controller1.Screen.print("A");
 
 
+        // If under driver control
+        if (inCompetition && !Competition.isEnabled()) {
+            Controller1.Screen.setCursor(1, 7);
+            Controller1.Screen.print("DISABLED");
+
+        } else if (Robot::controlState == Robot::state::DRIVER_CONTROLLED) {
+
+            // Field Centric or Robot Centric Control
+            Controller1.Screen.setCursor(1, 11);
+            if (Robot::currentControlMode == Robot::controlMode::FIELD_CENTRIC)
+                Controller1.Screen.print("FC");
+            else
+                Controller1.Screen.print("RC");
+            
+        } else {
+            // If under autonomous control
+            Controller1.Screen.setCursor(1, 11);
+            Controller1.Screen.print("A");
+
+
+        }
+
+
+        // Battery Percentage
+        Controller1.Screen.setCursor(1, 17);
+        Controller1.Screen.print("B%0.1d", (int)Brain.Battery.capacity());
+
+
+
+
+        // Position
+        Controller1.Screen.setCursor(2, 1);
+        Controller1.Screen.print("X: %0.2f, Y: %0.2f", Robot::FieldCentricPosition.x, Robot::FieldCentricPosition.y);
+        Controller1.Screen.setCursor(3, 1);
+        Controller1.Screen.print("Head: %d", (int)(Robot::FieldCentricPosition.angle * 180 / M_PI));
+
+        // Debug
+        Controller1.Screen.setCursor(3, 10);
+        Controller1.Screen.print("|GPSH:%d|", (int)gps.heading());
+
+        
+        vex::task::sleep(500);
     }
-
-
-    // Battery Percentage
-    Controller1.Screen.setCursor(1, 17);
-    Controller1.Screen.print("B%0.1d", (int)Brain.Battery.capacity());
-
-
-
-
-    // Position
-    Controller1.Screen.setCursor(2, 1);
-    Controller1.Screen.print("X: %0.2f, Y: %0.2f", Robot::FieldCentricPosition.x, Robot::FieldCentricPosition.y);
-    Controller1.Screen.setCursor(3, 1);
-    Controller1.Screen.print("Head: %d", (int)(Robot::FieldCentricPosition.angle * 180 / M_PI));
-
-    // Debug
-    Controller1.Screen.setCursor(3, 10);
-    Controller1.Screen.print("|GPSH:%d|", (int)gps.heading());
-
-    
-    vex::task::sleep(500);
 } // while (true)
 } // int ControllerHUD()
 } // namespace Mobius

@@ -70,7 +70,7 @@ void Robot::MotionCalculators() {
 
                 }
 
-                printf("Angle %f\n", Robot::desiredVelocity.rotate(-M_PI_2).angle() * 180 / M_PI);
+                //printf("Angle %f\n", Robot::desiredVelocity.rotate(-M_PI_2).angle() * 180 / M_PI);
                 //printf("current angle %f\n\n", Robot::FieldCentricPosition.angle * 180 / M_PI);
 
                 Robot::desiredVelocity.rotate(Robot::FieldCentricPosition.angle); // FIXME desired velocity is not returning expected values

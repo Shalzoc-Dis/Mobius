@@ -52,7 +52,10 @@ Mobius::CubicBezier Path::getNthCurve(uint8_t n) {
     return curve;
 }
 
-void Action::followCurve(Mobius::CubicBezier& curve, float precision, float speed) {
+void Action::followCurve(Mobius::CubicBezier curve, float precision, float speed) {
+
+    printf("Running Curve Follow...\n");
+
     // Follow the curve
     vector2 location;
     do {
@@ -61,11 +64,19 @@ void Action::followCurve(Mobius::CubicBezier& curve, float precision, float spee
 
         // Find the closest point on the curve
         float closestT = curve.calculateClosestT(location);
+
+        // Debug
+        vector2 closest = curve.position(closestT);
+        Brain.Screen.setPenColor(vex::red);
+        Brain.Screen.drawCircle(closest.x, closest.y, 3);
+
         float nextT;
         if (closestT + precision > 1)
             nextT = 1;
         else
             nextT = closestT + precision;
+
+        printf("nextT: %f\n", nextT);
 
         vector2 targetPosition = curve.position(nextT);
         vector2 toClosestPoint = location - targetPosition;
@@ -108,6 +119,7 @@ void Action::run() {
 void AutonomousPlan::execute() {
 
     m_currentAction = 0;
+    m_state = state::RUNNING;
 
     for (int i = m_currentAction; i < m_actions.size(); i++) {
         if (m_state == AutonomousPlan::state::RUNNING)

@@ -28,6 +28,13 @@ int main() {
     // Run the pre-autonomous function.
     Mobius::Robot::init();
 
+    // Testing only
+    tPositioningComputer.stop();
+    Mobius::Robot::FieldCentricPosition.x = 50;
+    Mobius::Robot::FieldCentricPosition.y = 50;
+    testing();
+
+
     if (Mobius::Robot::inCompetition) {
         // Set up callbacks for autonomous and driver control periods.
         printf("In Competition\n");
@@ -75,16 +82,23 @@ int main() {
 
 
 void testing () {
+    printf("Creating Path...\n");
     Mobius::Robot::Path path;
     // Part 1
-    path.m_points.push_back(Mobius::Position(0, 0, 0));
-    path.m_points.push_back(Mobius::Position(100, 0, 0));
-    path.m_points.push_back(Mobius::Position(100, 100, 0));
-    path.m_points.push_back(Mobius::Position(0, 100, 0));
+    path.m_points.push_back(Mobius::Position(20, 20, 0));
+    path.m_points.push_back(Mobius::Position(100, 20, 0));
+    path.m_points.push_back(Mobius::Position(150, 100, 0));
+    path.m_points.push_back(Mobius::Position(60, 200, 0));
 
-    Mobius::Robot::Action fc1(path.getNthCurve(0), 5, 1);
-
+    // Create action
+    printf("Creating Action...\n");
+    Mobius::Robot::Action fc1(path.getNthCurve(0), 0.05, 1);
+    // Create plan
+    printf("Creating Plan...\n");
     Mobius::Robot::AutonomousPlan testingPlan1;
+    testingPlan1.m_actions.push_back(fc1);
+
+    printf("Executing Plan...\n");
     testingPlan1.execute();
 
     // This should look like an S shape
