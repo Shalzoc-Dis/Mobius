@@ -7,6 +7,7 @@ namespace Mobius {
 void Robot::MotionCalculators() {
 
     float rotation = 0.0f; // In rads/s
+    vector2 controllerPosition(0, 0);
 
     switch (Robot::controlState) {
         case Robot::state::AUTONOMOUS:
@@ -20,7 +21,8 @@ void Robot::MotionCalculators() {
 
             // Basic movement
             // The robot should move in the direction of the joystick
-            vector2 controllerPosition((float)Controller1.Axis4.position(), (float)Controller1.Axis3.position());
+            controllerPosition.x = (float)Controller1.Axis4.position();
+            controllerPosition.y = (float)Controller1.Axis3.position();
 
             if (controllerPosition.magnitude() > 0.5f)
                 Robot::desiredVelocity = controllerPosition / 100.0f; // The maximum value the controller can return for its magnitude is about 127.5
@@ -49,20 +51,30 @@ void Robot::MotionCalculators() {
 
 
             // If the robot is in field centric mode, rotate the desired velocity by the angle of the robot
-            // TODO: Adjust for driver side
             if (Robot::currentControlMode == Robot::controlMode::FIELD_CENTRIC) {
                 // Rotate the desired velocity by the angle of the robot
                 switch (Robot::driverSide) {
                     case Robot::fieldSide::RED_BAR:
+                        // The 0 degree heading is what the controller sees; no adjustment needed
                         break;
                     case Robot::fieldSide::BLUE_BAR:
+                        Robot::desiredVelocity = Robot::desiredVelocity.rotate(M_PI);
                         break;
-                    case Robot::fieldSide::RED_FIELD:
+                    case Robot::fieldSide::RED_GOAL:
+                        Robot::desiredVelocity = Robot::desiredVelocity.rotate(-M_PI_2);
                         break;
-                    case Robot::fieldSide::BLUE_FIELD:
+                    case Robot::fieldSide::BLUE_GOAL:
+                        Robot::desiredVelocity = Robot::desiredVelocity.rotate(M_PI_2);
                         break;
                     break;
+
                 }
+
+                printf("Angle %f\n", Robot::desiredVelocity.rotate(-M_PI_2).angle() * 180 / M_PI);
+                //printf("current angle %f\n\n", Robot::FieldCentricPosition.angle * 180 / M_PI);
+
+                Robot::desiredVelocity.rotate(Robot::FieldCentricPosition.angle); // FIXME desired velocity is not returning expected values
+
                 // TODO Dash
                 // If the robot is in field centric mode, X can be pressed while moving. 
                 // Dash means the robot turns to face in (or away from) the direction of desired movement. it travels faster forwards and backwards
@@ -86,6 +98,7 @@ void Robot::MotionCalculators() {
             
 
         break;
+        default: break;
     }
 
     

@@ -9,6 +9,11 @@
 
 namespace Mobius {
 
+
+enum class rotationUnits {
+    rad, deg, rev
+};
+
 // A struct to represent a 2D vector
 struct vector2 {
 
@@ -45,6 +50,15 @@ struct vector2 {
         // Returns the angle between a line pointing to the point from the origin and the x-axis
         float polarAngle() {
             return atan2(y, x); // Returns the angle in radians
+        }
+
+        // Returns the angle between a line pointing to the point from the origin and the x-axis. This is counter-clockwise and in radians
+        float angle() {
+            float polar = polarAngle();
+            if (polar < 0) {
+                polar += M_TWOPI;
+            }
+            return polar;
         }
 
         // This overloads the data type to allow for scalar multiplication.
@@ -143,28 +157,6 @@ struct Position {
     }
 };
 
-// This is a struct to represent a point on a path which specifies a position and a rotation the robot should have at that point
 
-// This is to contain a path. Each note on the path has a position and a rotation
-struct CubicBezier;
-struct Path {
-    std::vector<Position> m_points;
-
-    Path() {};
-    ~Path() {};
-
-    // @brief Draws the path on the Brain's Screen
-    void visualise();
-
-    // @brief returns the length of the path in cm
-    float length();
-    // @return the number of curves in the path
-    uint8_t numCurves();
-
-    // @brief Returns a reference to the nth curve in the path
-    // @param n The index of the curve, starting at 0
-    Mobius::CubicBezier& getNthCurve(uint8_t n) {};
-
-};
 
 } // namespace Mobius

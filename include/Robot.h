@@ -22,7 +22,7 @@ namespace Robot {
 
     // This is to adjust for the position of the GPS strips. This enum stats where 0 degrees is
     // This is also used to determind where the drivers are standing
-    enum class fieldSide { RED_FIELD, BLUE_FIELD, BLUE_BAR, RED_BAR };
+    enum class fieldSide { RED_GOAL, BLUE_GOAL, BLUE_BAR, RED_BAR };
 
     // The position on the field the robot wants to be at
     extern Position desiredPosition;
@@ -68,7 +68,7 @@ namespace Robot {
     */
 
     // Enum for the current control state of the robot
-    enum class state { AUTONOMOUS, DRIVER_CONTROLLED };
+    enum class state { AUTONOMOUS, DRIVER_CONTROLLED, DISABLED };
     enum class controlMode { FIELD_CENTRIC, ROBOT_CENTRIC };
     // The current control state of the robot
     extern state controlState;
@@ -78,6 +78,8 @@ namespace Robot {
     enum class matchType { SKILLS, HEAD_TO_HEAD, AUTONOMOUS_SKILLS};
     // The current match type the robot is playing
     extern matchType currentMatchType;
+
+    extern bool inCompetition;
 
     // Weather the robot can use a gps or not
     extern bool gpsAvailable;
@@ -103,7 +105,7 @@ namespace Robot {
     // Listens to the control state of the robot and calculates how it needs to move to either follow a path or the controller
     void MotionCalculators();
     // Calculates the robot's position, velocity, and acceleration
-    void PositioningComputer();
+    int PositioningComputer();
     // Update the manipulators
     void ManipulatorControl();
     // Create callbacks for controller actions

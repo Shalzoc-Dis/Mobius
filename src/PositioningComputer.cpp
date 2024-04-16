@@ -2,8 +2,9 @@
 namespace Mobius {
 
 
-void Robot::PositioningComputer() {
+int Robot::PositioningComputer() {
 
+while (true) {
     vex::timer PositioningComputerUpdateTimer;
 
     vector2 gpsAcceleration(0, 0);
@@ -69,7 +70,7 @@ void Robot::PositioningComputer() {
     switch (Robot::GPS_0_Degree) {
         case Robot::fieldSide::BLUE_BAR:
             break;
-        case Robot::fieldSide::BLUE_FIELD:
+        case Robot::fieldSide::BLUE_GOAL:
             pos = pos.rotate(-M_PI_2);
             gpsPosition.angle -= M_PI_2;
             break;
@@ -77,7 +78,7 @@ void Robot::PositioningComputer() {
             pos = pos.rotate(M_PI);
             gpsPosition.angle += M_PI;
             break;
-        case Robot::fieldSide::RED_FIELD:
+        case Robot::fieldSide::RED_GOAL:
             pos = pos.rotate(M_PI_2);
             gpsPosition.angle += M_PI_2;
             break;
@@ -85,8 +86,8 @@ void Robot::PositioningComputer() {
     gpsPosition.x = pos.x;
     gpsPosition.y = pos.y;
 
-    printf("Position: %0.2f, %0.2f, %0.2f\n", gpsPosition.x, gpsPosition.y, gpsPosition.angle * 180 / M_PI);
-    printf("Quality: %f\n\n", gps.quality());
+    //printf("Position: %0.2f, %0.2f, %0.2f\n", gpsPosition.x, gpsPosition.y, gpsPosition.angle * 180 / M_PI);
+    //printf("Quality: %ld\n\n", gps.quality());
 
 
     // Check for accuracy
@@ -96,6 +97,11 @@ void Robot::PositioningComputer() {
     Robot::angularAcceleration = gps.acceleration(vex::axisType::zaxis);
 
     // Vision?
+
+
+    vex::task::sleep(100);
+}
+    return 0;
 };
 
 } // namespace Mobius

@@ -23,7 +23,7 @@ vector2 momentum;
 
 // Physical Characteristics
 float width = 42.4, length = 20.5, height = 10; // In cm
-Position gpsOffset(-width / 2, 0, 90); // In cm and degrees ccw
+Position gpsOffset(-9.6f, -11.4f, 180); // In cm and degrees ccw
 
 // State
 state controlState;
@@ -31,6 +31,8 @@ controlMode currentControlMode;
 matchType currentMatchType;
 vector2 desiredVelocity;
 float desiredAngularVelocity;
+
+bool inCompetition;
 
 fieldSide driverSide;
 fieldSide GPS_0_Degree;
@@ -52,7 +54,6 @@ void teleOp() {
     while (true) {
         //field.draw(5, 5, 230);
         Mobius::Robot::ManipulatorControl();
-        //Mobius::Robot::PositioningComputer();
         Mobius::Robot::MotionCalculators();
 
         vex::task::sleep(20);
@@ -71,6 +72,12 @@ void init() {
         gps.calibrate();
         waitUntil(!gps.isCalibrating());
     }
+
+    if (gps.heading() == 360)
+        Mobius::Robot::gpsAvailable = false;
+    else 
+        Mobius::Robot::gpsAvailable = true;
+
     // Set the intake motor
     intakeMotor.setStopping(vex::brakeType::hold);
 
@@ -79,6 +86,13 @@ void init() {
     field.init();
     Brain.Screen.clearScreen();
 
+    if (Competition.isCompetitionSwitch()) {
+        Brain.Screen.print("Competition Switch");
+        inCompetition = true;
+    } else {
+        Brain.Screen.print("No Competition Switch");
+        inCompetition = false;
+    }
 
     Mobius::Robot::driveSpeed = 1.0f;
     Mobius::Robot::currentControlMode = Mobius::Robot::controlMode::FIELD_CENTRIC;
@@ -86,7 +100,6 @@ void init() {
 
     Mobius::Robot::driverSide = Mobius::Robot::fieldSide::RED_BAR;
     Mobius::Robot::GPS_0_Degree = Mobius::Robot::fieldSide::BLUE_BAR;
-    Mobius::Robot::gpsAvailable = true;
 
     ControllerCallbacks();
 }
@@ -111,11 +124,9 @@ void ControllerCallbacks() {
     Controller1.ButtonA.released([]() {
         if (Mobius::Robot::currentControlMode == Mobius::Robot::controlMode::FIELD_CENTRIC) {
             Mobius::Robot::currentControlMode = Mobius::Robot::controlMode::ROBOT_CENTRIC;
-            printf("Robot centric\n");
         }
         else {
             Mobius::Robot::currentControlMode = Mobius::Robot::controlMode::FIELD_CENTRIC;
-            printf("Field centric\n");
         }
     });
 

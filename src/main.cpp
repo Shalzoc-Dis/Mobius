@@ -21,13 +21,20 @@ extern Mobius::Field field;
 int main() {
 
     vex::task tControllerHUD(Mobius::Robot::ControllerHUD);
-
-    // Set up callbacks for autonomous and driver control periods.
-    Competition.autonomous(Mobius::Robot::autonomous);
-    Competition.drivercontrol(Mobius::Robot::teleOp);
+    vex::task tPositioningComputer(Mobius::Robot::PositioningComputer);
 
     // Run the pre-autonomous function.
     Mobius::Robot::init();
+
+    if (Mobius::Robot::inCompetition) {
+        // Set up callbacks for autonomous and driver control periods.
+        printf("In Competition\n");
+        Competition.autonomous(Mobius::Robot::autonomous);
+        Competition.drivercontrol(Mobius::Robot::teleOp);
+    } else {
+        printf("Not in Competition\n");
+        Mobius::Robot::teleOp();
+    }
 
     
 
@@ -52,6 +59,13 @@ int main() {
 
     // Prevent main from exiting with an infinite loop.
     while (true) {
+        if (Competition.isAutonomous())
+            Mobius::Robot::controlState = Mobius::Robot::state::AUTONOMOUS;
+        else if (Competition.isDriverControl())
+            Mobius::Robot::controlState = Mobius::Robot::state::DRIVER_CONTROLLED;
+        else 
+            Mobius::Robot::controlState = Mobius::Robot::state::DISABLED;
+
         vex::wait(100, vex::msec);
     }
 

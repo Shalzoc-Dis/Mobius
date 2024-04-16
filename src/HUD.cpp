@@ -31,7 +31,7 @@ while (true) {
 
 
     // If under driver control
-    if (!Competition.isEnabled()) {
+    if (inCompetition && !Competition.isEnabled()) {
         Controller1.Screen.setCursor(1, 7);
         Controller1.Screen.print("DISABLED");
 
@@ -61,18 +61,14 @@ while (true) {
 
 
     // Position
-    /*
     Controller1.Screen.setCursor(2, 1);
     Controller1.Screen.print("X: %0.2f, Y: %0.2f", Robot::FieldCentricPosition.x, Robot::FieldCentricPosition.y);
     Controller1.Screen.setCursor(3, 1);
     Controller1.Screen.print("Head: %d", (int)(Robot::FieldCentricPosition.angle * 180 / M_PI));
-    */
 
     // Debug
-    /*
-    Controller1.Screen.setCursor(1, 3);
+    Controller1.Screen.setCursor(3, 10);
     Controller1.Screen.print("|GPSH:%d|", (int)gps.heading());
-    */
 
     
     vex::task::sleep(500);
