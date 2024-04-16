@@ -18,6 +18,8 @@ extern Mobius::Field field;
 // define your global instances of motors and other devices here
 
 
+void testing();
+
 int main() {
 
     vex::task tControllerHUD(Mobius::Robot::ControllerHUD);
@@ -68,5 +70,23 @@ int main() {
 
         vex::wait(100, vex::msec);
     }
+
+}
+
+
+void testing () {
+    Mobius::Robot::Path path;
+    // Part 1
+    path.m_points.push_back(Mobius::Position(0, 0, 0));
+    path.m_points.push_back(Mobius::Position(100, 0, 0));
+    path.m_points.push_back(Mobius::Position(100, 100, 0));
+    path.m_points.push_back(Mobius::Position(0, 100, 0));
+
+    Mobius::Robot::Action fc1(path.getNthCurve(0), 5, 1);
+
+    Mobius::Robot::AutonomousPlan testingPlan1;
+    testingPlan1.execute();
+
+    // This should look like an S shape
 
 }

@@ -5,6 +5,7 @@
 #include "vex.h"
 #include "Bezier.h"
 #include "Field.h"
+#include "Auto.h"
 
 extern vex::competition Competition;
 extern vex::brain Brain;

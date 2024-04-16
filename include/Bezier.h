@@ -56,7 +56,7 @@ struct CubicBezier {
         @param iterations=5 The number of iterations of the search in a sector. Each iteration halves the search space
         @return The t value of the curve that corresponds to the closest point
     */
-    float calculateClosestT(vector2 point, uint8_t divisions, uint8_t iterations);
+    float calculateClosestT(vector2 point, uint8_t divisions = 5, uint8_t iterations = 5);
     // Tests the visualise and calculateClosestT functions
     static void test();
 

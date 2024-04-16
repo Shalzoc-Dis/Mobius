@@ -2,7 +2,7 @@
 
 #include "Robot.h"
 
-
+extern vex::brain Brain;
 
 namespace Mobius { namespace Robot {
 
@@ -43,10 +43,15 @@ struct Action {
     };
 
     Type m_type;
+    float m_precision;
+    Mobius::CubicBezier m_curve;
+    float m_speed;
+    float m_angle;
+    Mobius::rotationUnits m_rotationUnits;
 
 
-    void followCurve(const CubicBezier& curve);
-    void turn(float angle);
+    void followCurve(Mobius::CubicBezier& curve, float precision, float speed = 1);
+    void turn(float angle, float speed, Mobius::rotationUnits units);
     void followPath(const Path& path);
 
 
@@ -55,7 +60,7 @@ struct Action {
 
     // @brief This is a function to wait for a certain amount of time
     // @param time The time to wait in milliseconds
-    void wait(double time);
+    void pause(double time);
 
     // @brief This function performs the action
     void run();
@@ -63,9 +68,11 @@ struct Action {
 
 
     // @brief An action to follow a curve
-    // @param type The type of action to perform
-    // @param value The value to use for the action
-    Action(CubicBezier& curve, float speed);
+    // @param curve The curve to follow
+    // @param precision The step size
+    // @param speed The parametric speed of the robot
+    Action(Mobius::CubicBezier& curve, float precision, float speed = 1)
+     : m_curve(curve), m_precision(precision), m_speed(speed) { m_type = Action::Type::FOLLOW_CURVE; };
 
     // @brief An action to turn the robot
     // @param angle The angle to turn ccw
@@ -105,8 +112,15 @@ struct AutonomousPlan {
     state m_state;
     std::vector<Action> m_actions;
 
+    AutonomousPlan();
+    ~AutonomousPlan();
+
     // @brief This function runs the plan. It performs one action at a time
     void execute();
+
+
+    // NEED TO REARCHITECT AUTONOMOUS TO USE BELOW
+
     // @brief This function pauses the plan until resumed
     void pause();
     // @brief This function resumes the plan

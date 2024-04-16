@@ -2,6 +2,8 @@
 #include "Robot.h"
 
 
+extern vex::brain Brain;
+
 namespace Mobius { namespace Robot {
 
 
@@ -12,11 +14,13 @@ bool Path::isValid() {
         for (Position point : m_points) {
             if (!(point.x && point.y && point.angle)) {
                 // One value was not defined, so the path is invalid
+                printf("Path Invalid!\n");
                 return false;
             }
         }
         return true;
     } else {
+        printf("Path Invalid!\n");
         return false;
     }
 }
@@ -33,7 +37,10 @@ void Path::visualise() {
 }
 
 uint8_t Path::numCurves() {
-    return 0;
+    if (isValid())
+        return m_points.size() / 4;
+    else 
+        return 0;
 }
 
 Mobius::CubicBezier Path::getNthCurve(uint8_t n) {
@@ -45,16 +52,70 @@ Mobius::CubicBezier Path::getNthCurve(uint8_t n) {
     return curve;
 }
 
-void Action::followCurve(CubicBezier& curve, float speed) {
+void Action::followCurve(Mobius::CubicBezier& curve, float precision, float speed) {
     // Follow the curve
+    vector2 location;
+    do {
+        location.x = Robot::FieldCentricPosition.x;
+        location.y = Robot::FieldCentricPosition.y;
+
+        // Find the closest point on the curve
+        float closestT = curve.calculateClosestT(location);
+        float nextT;
+        if (closestT + precision > 1)
+            nextT = 1;
+        else
+            nextT = closestT + precision;
+
+        vector2 targetPosition = curve.position(nextT);
+        vector2 toClosestPoint = location - targetPosition;
+
+        Robot::desiredVelocity = toClosestPoint.normalised() * speed;
+
+        curve.visualise();
+        Brain.Screen.setPenColor(vex::yellow);
+        Brain.Screen.drawCircle(location.x, location.y, 3);
+        Brain.Screen.drawLine(location.x, location.y, targetPosition.x, targetPosition.y);
+        vex::wait(500, vex::timeUnits::msec);
+
+    } while (location.x - curve.p3.x > precision && location.y - curve.p3.y > precision);
+
+    // For testing purposes; remove before use
+    printf("Done");
+    while (true) { vex::this_thread::sleep_for(100); }
 }
 
 void Action::turn(float angle, float speed, Mobius::rotationUnits units) {
     // Turn the robot
 }
 
+void Action::run() {
+    printf("Running action type %d...\n", m_type);
+
+    switch(m_type) {
+        case Action::Type::FOLLOW_CURVE:
+            followCurve(m_curve, m_precision, m_speed); break;
+        case Action::Type::TURN:
+            turn(m_angle, m_speed, m_rotationUnits); break;
+        default: break;
+    }
+
+    printf("Action complete.\n");
+}
 
 
+
+void AutonomousPlan::execute() {
+
+    m_currentAction = 0;
+
+    for (int i = m_currentAction; i < m_actions.size(); i++) {
+        if (m_state == AutonomousPlan::state::RUNNING)
+            m_actions[i].run();
+        else if (m_state == AutonomousPlan::state::PAUSED)
+            vex::wait(100, vex::timeUnits::msec);
+    }
+}
 
 } // namespace Robot
 } // namespace Mobius

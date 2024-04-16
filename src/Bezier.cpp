@@ -78,7 +78,7 @@ void CubicBezier::visualise(int derivative) {
     }
 }
 
-float CubicBezier::calculateClosestT(vector2 point, uint8_t divisions = 5, uint8_t iterations = 5) {
+float CubicBezier::calculateClosestT(vector2 point, uint8_t divisions, uint8_t iterations) {
     // This function uses two points on the curve and calculates the distance from each to the test point
     // The t that produces the farther point is then changed to be the average of the points. The other point stays the same
     // The search is performed anew on these two points. Overall, it runs [iteration] times
