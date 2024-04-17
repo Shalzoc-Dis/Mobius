@@ -57,7 +57,7 @@ void Robot::MotionCalculators() {
                 
                 // Rotate the desired velocity by the angle of the robot 
                 printf("DV: %.1f\n", Robot::desiredVelocity.angle() * 180.0f / M_PI);
-                Robot::desiredVelocity = Robot::desiredVelocity.rotated(M_TWOPI - Robot::FieldCentricPosition.angle);
+                Robot::desiredVelocity = Robot::desiredVelocity.rotated(Robot::FieldCentricPosition.angle);
                 printf("DVA: %.1f\n\n", Robot::desiredVelocity.angle() * 180.0f / M_PI);
 
                 switch (Robot::driverSide) {
@@ -77,7 +77,7 @@ void Robot::MotionCalculators() {
 
                 }
 
-                //printf("Angle %f\n", Robot::desiredVelocity.rotate(-M_PI_2).angle() * 180 / M_PI);
+                //printf("Angle %f\n", Robot::desiredVelocity.rotated(-M_PI_2).angle() * 180 / M_PI);
                 //printf("current angle %f\n\n", Robot::FieldCentricPosition.angle * 180 / M_PI);
 
 
@@ -118,9 +118,8 @@ void Robot::MotionCalculators() {
     float angularVel_BL = 0.0f;
     float angularVel_BR = 0.0f;
 
-    Robot::desiredVelocity.rotate(M_PI_2);
-    vector2 v = Robot::desiredVelocity; // 0 in this formula is forwards, while 0 for the robot is right
-    printf("MotionCalculator Val: %0.1f, %0.1f\n", v.x, v.y);
+    vector2 v = Robot::desiredVelocity.rotated(-M_PI_2); // 0 in this formula is forwards, while 0 for the robot is right
+    //printf("MotionCalculator Val: %0.1f, %0.1f\n", v.x, v.y);
     vector2 l = Robot::wheelOffset; l.x /= 100.0f; l.y /= 100.0f;   // Convert to metres
     float r = Robot::wheelRadius / 100.0f; // Convert to metres
 

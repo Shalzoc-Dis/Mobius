@@ -83,8 +83,10 @@ while (true) {
             gpsPosition.angle += M_PI_2;
             break;
     }
+
     gpsPosition.x = pos.x;
     gpsPosition.y = pos.y;
+
     if (gpsPosition.angle >= M_TWOPI)
         gpsPosition.angle -= M_TWOPI;
 

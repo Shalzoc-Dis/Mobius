@@ -59,8 +59,6 @@ while (true) {
         Controller1.Screen.print("B%0.1d", (int)Brain.Battery.capacity());
 
 
-
-
         // Position
         Controller1.Screen.setCursor(2, 1);
         Controller1.Screen.print("X: %0.2f, Y: %0.2f", Robot::FieldCentricPosition.x, Robot::FieldCentricPosition.y);
@@ -69,9 +67,18 @@ while (true) {
 
         // Debug
         Controller1.Screen.setCursor(3, 10);
-        Controller1.Screen.print("|GPSH:%d|", (int)gps.heading());
+        if (gpsAvailable)
+            Controller1.Screen.print("|GPSH:%d|", (int)gps.heading());
+        else
+            Controller1.Screen.print("NO");
 
-        
+        Controller1.Screen.setCursor(3, 18);
+        if (Robot::driverSide == Mobius::Robot::fieldSide::BLUE_GOAL)
+            Controller1.Screen.print("R");
+        else if (Robot::driverSide == Mobius::Robot::fieldSide::RED_GOAL)
+            Controller1.Screen.print("B");
+
+
         vex::task::sleep(500);
     }
 } // while (true)

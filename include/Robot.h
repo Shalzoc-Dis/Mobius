@@ -115,6 +115,9 @@ namespace Robot {
     // Give the user feedback
     int ControllerHUD();
 
+    // Periodicalle check if GPS is available
+    int checkGPS();
+
 
     // Functions for competition
     void autonomous();

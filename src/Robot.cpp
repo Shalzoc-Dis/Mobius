@@ -45,20 +45,20 @@ void autonomous() {
     // Implement autonomous here
     Mobius::Robot::controlState = Mobius::Robot::state::AUTONOMOUS;
 
+    frontLeftWheel.spin(vex::directionType::rev);
+    frontRightWheel.spin(vex::directionType::rev);
+    backLeftWheel.spin(vex::directionType::rev);
+    backRightWheel.spin(vex::directionType::rev);
+    
+    vex::wait(5, vex::timeUnits::sec);
+
+
     frontLeftWheel.spin(vex::directionType::fwd);
     frontRightWheel.spin(vex::directionType::fwd);
     backLeftWheel.spin(vex::directionType::fwd);
     backRightWheel.spin(vex::directionType::fwd);
-    
-    vex::wait(2, vex::timeUnits::sec);
 
-
-    frontLeftWheel.spin(vex::directionType::rev);
-    frontRightWheel.spin(vex::directionType::rev);
-    backLeftWheel.spin(vex::directionType::fwd);
-    backRightWheel.spin(vex::directionType::fwd);
-
-    vex::wait(2, vex::timeUnits::sec);
+    vex::wait(3, vex::timeUnits::sec);
 
 
     frontLeftWheel.stop();
@@ -104,11 +104,13 @@ void init() {
         waitUntil(!gps.isCalibrating());
     }
 
-    if (gps.heading() == 360 || gps.quality() < 40)
+    if (gps.heading() == 360 || gps.quality() < 40) {
         Mobius::Robot::gpsAvailable = false;
-    else {
+        Mobius::Robot::currentControlMode = Mobius::Robot::controlMode::ROBOT_CENTRIC;
+    } else {
         printf("GPS Locked\n");
         Mobius::Robot::gpsAvailable = true;
+        Mobius::Robot::currentControlMode = Mobius::Robot::controlMode::FIELD_CENTRIC;
     }
 
     // Set the intake motor
@@ -128,10 +130,9 @@ void init() {
     }
 
     Mobius::Robot::driveSpeed = 1.0f;
-    Mobius::Robot::currentControlMode = Mobius::Robot::controlMode::FIELD_CENTRIC;
     Mobius::Robot::currentMatchType = Mobius::Robot::matchType::HEAD_TO_HEAD;
 
-    Mobius::Robot::driverSide = Mobius::Robot::fieldSide::RED_BAR;
+    Mobius::Robot::driverSide = Mobius::Robot::fieldSide::BLUE_GOAL;
     // Middle field has the red bar at 0 degrees
     Mobius::Robot::GPS_0_Degree = Mobius::Robot::fieldSide::RED_BAR;
 
@@ -145,7 +146,7 @@ void ControllerCallbacks() {
     // - Axis 3:    Front-Back drivetrain translation
     // - Axis 4:    Left-Right drivetrain translation
     // - Button A:  Toggle field centric and robot centric positioning
-    // - Button B:  Nothing
+    // - Button B:  Switch Alliance
     // - Button X:  //TODO Dash mode (robot turns to face the movement direction in driver control and field centric mode)
     // - Button Y:  Nothing
     // - R1:        //Intake in
@@ -171,9 +172,32 @@ void ControllerCallbacks() {
         Mobius::Robot::driveSpeed = 0.75f;
     });
 
+    Controller1.ButtonB.pressed([]() {
+        printf("B pressed");
+        if (Mobius::Robot::driverSide == Mobius::Robot::fieldSide::BLUE_GOAL)
+            Mobius::Robot::driverSide == Mobius::Robot::fieldSide::RED_GOAL;
+        else
+            Mobius::Robot::driverSide == Mobius::Robot::fieldSide::BLUE_GOAL;
+    });
+
+
+
 }
 
+int checkGPS() {
+    while (true) {
 
+        if (gps.quality() < 40) {
+            gpsAvailable = false;
+            Controller1.rumble("---");
+        } else 
+            gpsAvailable = true;
+            Controller1.rumble("..");
+
+        vex::this_thread::sleep_for(10000);
+    }
+    return 0;
+}
 
 } // namespace Mobius::Robot   
 } // namespace Mobius

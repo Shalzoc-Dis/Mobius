@@ -112,17 +112,6 @@ struct vector2 {
         }
 
 
-        // @brief Rotate the vector counter-clockwise by a given angle
-        // @param angle The angle in radians
-        void rotate(float angle) {
-            // Reference: https://matthew-brett.github.io/teaching/rotation_2d.html
-            //if (this->x != 0.0f && this->y != 0.0f) {
-                x = (cos(angle) * x) - (sin(angle) * y);
-                y = (sin(angle) * x) + (cos(angle) * y); 
-                printf("Rotation applied (%f)\n", angle);
-            //}
-        }
-
 
         // @brief Calculate the dot product of two vectors
         // @param obj The other vector
